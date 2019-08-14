@@ -63,7 +63,5 @@ Temporary Items
 .apdisk
 
 /public/upload/users/*.png
-/public/upload/influencers/*.png
-/public/upload/creatives/*
 uploads/*
 /storage/debugbar/
