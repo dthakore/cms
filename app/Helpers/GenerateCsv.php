@@ -8,7 +8,7 @@ class GenerateCsv {
 
     public static function createCsv($entry){
 
-            $columns = array('#', 'Case Number', 'Next Date', 'Camplainant Name', 'Coram', 'Stage', 'Client');
+            $columns = array('#', 'Case Number', 'Next Date', 'Complainant Name', 'Coram', 'Stage', 'Client');
             $count = 0;
             foreach ($entry as $key => $value) {
                 $count++;
