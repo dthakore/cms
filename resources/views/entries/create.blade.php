@@ -114,14 +114,12 @@
             <script>
                 function valueChanged() {
                     if($('#mailbox').is(':checked')){
-                        $('.maileditor').show();
+                        $('#cke_content').show();
                         CKEDITOR.replace('content');
                         $('#mail-content').val(CKEDITOR.instances.content.getData());
-                        // $('.maileditor').ckeditor();
-                        // $('#cke_email-content').show();
+                        $('.maileditor').ckeditor();
                     } else {
-                        $('.maileditor').hide();
-                        $('#cke_email-content').hide();
+                        $('#cke_content').hide();
                     }
                 }
 
