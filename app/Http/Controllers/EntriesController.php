@@ -184,7 +184,7 @@ class EntriesController extends Controller
 
     public function sendMail($to,$message)
     {
-        $to = 'devangi.thakore@gmail.com';
+//        $to = 'devangi.thakore@gmail.com';
         $subject = 'Case Status';
         $from = 'support@nachiketa.com';
         $headers = 'MIME-Version: 1.0' . "\r\n";
