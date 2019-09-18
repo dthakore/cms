@@ -101,7 +101,7 @@
                                         <b>Next Date</b>
                                     </div>
                                     <div class="col-md-8">
-                                        @if(count($caseEntries)>0)
+                                        @if($caseEntries)
                                             @if($caseEntries->next_date == '' || $caseEntries->next_date == null)
                                                 @php
                                                     $diff = \Carbon\Carbon::parse($caseEntries->date)->diffForHumans();

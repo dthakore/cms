@@ -186,14 +186,6 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        @if(auth()->user()->hasRole(['super_admin']))
-                            <li>
-                                <a href="{{ url('admin/adminlist') }}">
-                                    <i class="fa fa-users"></i>
-                                    <span>Admin List</span>
-                                </a>
-                            </li>
-                        @endif
                         <li>
                             <a href="{{ url('admin/clients') }}">
                                 <i class="fa fa-users"></i>
@@ -204,12 +196,6 @@
                             <a href="{{ url('admin/cases') }}">
                                 <i class="fa fa-list"></i>
                                 <span>Cases</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('admin/search/entry') }}">
-                                <i class="fa fa-search"></i>
-                                <span>Case entries</span>
                             </a>
                         </li>
                     @else
@@ -275,6 +261,13 @@
                             <span class="pull-left">{{  Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
+                            @if(auth()->user()->hasRole(['super_admin']))
+                                <li>
+                                    <a href="{{ url('admin/adminlist') }}">
+                                        <span>Admin List</span>
+                                    </a>
+                                </li>
+                            @endif
                             <li>
                                 <a class="dropdown-item" href="{{ url('update/password') }}/{{\Illuminate\Support\Facades\Auth::user()->id}}">
                                    Update password
