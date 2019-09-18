@@ -7,6 +7,8 @@ use App\Cases;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class EntriesController extends Controller
 {
@@ -36,13 +38,13 @@ class EntriesController extends Controller
 
     public function create(Cases $case)
     {
-        $caseEntries = CaseEntries::where('case_id',$case['id'])->count();
+        $caseEntries = CaseEntries::where('case_id', $case['id'])->count();
         $next_date = '';
-        if($caseEntries>0){
-            $caseEntryLast = CaseEntries::where('case_id',$case['id'])->get()->last();
+        if ($caseEntries > 0) {
+            $caseEntryLast = CaseEntries::where('case_id', $case['id'])->get()->last();
             $next_date = $caseEntryLast->next_date;
         }
-        return view('entries.create',['case' => $case,'next_date'=>$next_date]);
+        return view('entries.create', ['case' => $case, 'next_date' => $next_date]);
     }
 
     /*
@@ -53,14 +55,15 @@ class EntriesController extends Controller
     {
         //dd($request->all());
         $date = Carbon::parse($request->input('date'))->format('Y-m-d H:i:s');
-        if ($request->input('next_date')){
+        if ($request->input('next_date')) {
             $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-        }else{
+        } else {
             $nextdate = null;
         }
         //$nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
 
-        $case = Cases::where('id',$request->input('case_id'))->first();
+        $case = Cases::where('id', $request->input('case_id'))->first();
+        $to = \App\User::where('id',$case->user_id)->first()->email;
         $model = new CaseEntries();
         $model->date = $date;
         $model->coram = $request->input('coram');
@@ -69,8 +72,8 @@ class EntriesController extends Controller
 //        if ($nextdate > $case->next_date){
 //            $case->next_date = $nextdate;
 //        }
-            $case->stage = $request->input('stage');
-            $case->save();
+        $case->stage = $request->input('stage');
+        $case->save();
 
 
         $model->next_date = $nextdate;
@@ -78,7 +81,7 @@ class EntriesController extends Controller
         $model->case_id = $request->input('case_id');
         $model->created_at = Carbon::now()->format('Y-m-d H:i:s');
 
-
+        $this->sendMail($to,$request->input('content'));
 
         if ($request->hasFile('attachment')) {
             $imageName = $request->file('attachment')->getClientOriginalName();
@@ -90,11 +93,11 @@ class EntriesController extends Controller
             $model->attachment = $attachment;
         }
 
-        if ($model->save()){
+        if ($model->save()) {
             if ($request->hasFile('attachment')) {
                 $request->file('attachment')->move(public_path('attachment'), $attachment);
             }
-            return redirect('/admin/cases/view/'.$request->input('case_id'));
+            return redirect('/admin/cases/view/' . $request->input('case_id'));
         }
 
     }
@@ -112,9 +115,9 @@ class EntriesController extends Controller
             $date = Carbon::parse($request->input('date'))->format('Y-m-d');
             //$nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d');
 
-            if ($request->input('next_date')){
+            if ($request->input('next_date')) {
                 $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-            }else{
+            } else {
                 $nextdate = null;
             }
 
@@ -122,7 +125,7 @@ class EntriesController extends Controller
             $entries->date = $date;
             $entries->coram = $request->input('coram');
             $entries->stage = $request->input('stage');
-            if ($nextdate > $case->next_date){
+            if ($nextdate > $case->next_date) {
                 $case->next_date = $nextdate;
                 $case->save();
             }
@@ -132,11 +135,10 @@ class EntriesController extends Controller
             $entries->updated_at = Carbon::now()->format('Y-m-d H:i:s');
 
 
+            if ($request->hasFile('attachment')) {
 
-            if($request->hasFile('attachment')) {
 
-
-                File::delete('attachment/'.$entries->attachment);
+                File::delete('attachment/' . $entries->attachment);
 
                 $imageName = $request->file('attachment')->getClientOriginalName();
 
@@ -149,31 +151,49 @@ class EntriesController extends Controller
 
             }
 
-            if ($entries->save()){
+            if ($entries->save()) {
                 if ($request->hasFile('attachment')) {
                     $request->file('attachment')->move(public_path('attachment'), $attachment);
                 }
-                return redirect('/admin/cases/view/'.$entries->case_id);
+                return redirect('/admin/cases/view/' . $entries->case_id);
             }
         }
 
         return view('entries.update', ['entries' => $entries]);
     }
 
-    public function view(Request $request, CaseEntries $entries){
-            return view('entries.view', ['entries' => $entries]);
+    public function view(Request $request, CaseEntries $entries)
+    {
+        return view('entries.view', ['entries' => $entries]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $filename = CaseEntries::find($request->input('id'))->attachment;
         CaseEntries::find($request->input('id'))->delete();
-        File::delete('attachment/'.$filename);
+        File::delete('attachment/' . $filename);
         return response()->json([
-           'token' => 1
+            'token' => 1
         ]);
     }
 
-    public function searchEntry(Request $request){
+    public function searchEntry(Request $request)
+    {
         return view('entries.search');
+    }
+
+    public function sendMail($to,$message)
+    {
+        $subject = 'Case Status';
+        $from = 'peterparker@email.com';
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers .= 'From: ' . $from . "\r\n" .
+            'Reply-To: ' . $from . "\r\n";
+        if (mail($to, $subject, $message, $headers)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

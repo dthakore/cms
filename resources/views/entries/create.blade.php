@@ -81,16 +81,23 @@
                         </div>
 
                         <div class="form-group row">
-
                             <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                                 <label class="control-label" for="attachment">Attachment</label>
                                 <input id="attachment" type="file" class="form-control" name="attachment" >
-
                             </div>
-
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                                <input name="send_mail" id="mailbox" type="checkbox" onchange="valueChanged()"> Send Email
+                            </div>
+                        </div>
 
+                        <div class="form-group row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                                <textarea name="content" id="content" class="maileditor" hidden></textarea>
+                            </div>
+                        </div>
 
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-sm-12">
                             <button type="submit" class="btn btn-success btn-round text-center">Submit</button>
@@ -102,8 +109,23 @@
 @endsection
 @push('jsfiles')
             <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+            <script src="../../../vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+            <script src="../../../vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
             <script>
-                    $("#entry_form").validate({
+                function valueChanged() {
+                    if($('#mailbox').is(':checked')){
+                        $('.maileditor').show();
+                        CKEDITOR.replace('content');
+                        $('#mail-content').val(CKEDITOR.instances.content.getData());
+                        // $('.maileditor').ckeditor();
+                        // $('#cke_email-content').show();
+                    } else {
+                        $('.maileditor').hide();
+                        $('#cke_email-content').hide();
+                    }
+                }
+
+                $("#entry_form").validate({
                         rules: {
                             date: {
                                 required: true,

@@ -27,8 +27,16 @@
             <div class="panel-body">
 
                 <a href="{{ url('admin/clients/create') }}" class="btn-primary btn btn-round btn-success" style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
-                <table class="table table-bordered bordered table-striped table-condensed datatable">
-
+                <table class="table table-bordered bordered table-striped table-condensed datatable" id="clients">
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -41,7 +49,7 @@
             oTable = $('.datatable').dataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 select: true,
                 buttons: [
 
@@ -71,7 +79,7 @@
                                 return $.camelCase(full['name']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -83,7 +91,7 @@
                                 return $.camelCase(full['email']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -95,7 +103,7 @@
                                 return $.camelCase(full['contact_number']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
 
@@ -108,7 +116,7 @@
                                 return $.camelCase(full['company']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
 
@@ -122,10 +130,23 @@
                                 ' <a href="javascript:;"><i class="fa fa-trash swal-warning-cancel" data-id="'+full['id']+'" title="Delete attribute"></i></a>'
 
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": false
                     }
-                ]
+                ],
+                "initComplete": function () {
+                    var r = $('#clients tfoot tr');
+                    $('#clients thead').append(r);
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var input = document.createElement("input");
+                        $(input).appendTo($(column.footer()).empty())
+                            .on('change', function () {
+
+                                column.search($(this).val(), false, false,true).draw();
+                            });
+                    });
+                }
             });
             // oTable.DataTable().buttons().container().appendTo( $('.col-sm-6:eq(0)', oTable.DataTable().table().container() ) );
             $('#search-form').on('submit', function(e) {

@@ -68,7 +68,7 @@
                 <div class="form-group row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                            <label class="control-label" for="date">Date</label>
+                            <label class="control-label" for="date">Enter date to get causelist</label>
                             <input id="date" type="text" class="form-control" name="date" >
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt25">
@@ -83,8 +83,17 @@
                             <h4 class="text-uppercase page-header">Search Results</h4>
                         </div>
                         <div class="col-md-12">
-                            <table class="table table-bordered bordered table-striped table-condensed datatable">
-
+                            <table class="table table-bordered bordered table-striped table-condensed datatable" id="search-result">
+                                <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -142,6 +151,7 @@
                                         "type":"POST",
                                         "success": function(res, status, xhr) {
                                             console.log("File deleted successfully");
+                                            console.log(res);
                                         }
                                     })
                                 }, 4000);
@@ -166,23 +176,23 @@
                             return $.camelCase(full['cases'].case_number);
                         }
                     },
-                    "searchable": false,
+                    "searchable": true,
                     "orderable": true
                 },
                 {
                     title: 'Next Date', data: 'next_date', name: 'next_date', width: "7%", render: function ( data, type, full, meta ) {
                         if(full['next_date'] == null){
-                            return "N/A";
+                            return moment(full['date']).format('DD-MM-YYYY') + " <br><span class='next-date'> (" + moment(full['date']).fromNow()+")</span>";
                         }
                         else{
                             return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date'> (" + moment(full['next_date']).fromNow()+")</span>";
                         }
                     },
-                    "searchable": false,
+                    "searchable": true,
                     "orderable": true
                 },
                 {
-                    title: 'Camplainant Name', data: 'cases.complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
+                    title: 'Complainant Name', data: 'cases.complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
                         if(full['cases'].complainant_name == null){
                             return "N/A";
                         }
@@ -190,19 +200,19 @@
                             return $.camelCase(full['cases'].complainant_name);
                         }
                     },
-                    "searchable": false,
+                    "searchable": true,
                     "orderable": true
                 },
                 {
-                    title: 'Coram', data: 'coram', name: 'coram', width: "7%", render: function ( data, type, full, meta ) {
-                        if(full['coram'] == null){
+                    title: 'Client', data: 'cases.client', name: 'cases.client', width: "7%", render: function ( data, type, full, meta ) {
+                        if(full['cases'].client == null){
                             return "N/A";
                         }
                         else{
-                            return $.camelCase(full['coram']);
+                            return $.camelCase(full['cases'].client);
                         }
                     },
-                    "searchable": false,
+                    "searchable": true,
                     "orderable": true
                 },
                 {
@@ -216,11 +226,22 @@
                             return '<span class="'+stag+'">'+full['stage']+'</span>';
                         }
                     },
-                    "searchable": false,
+                    "searchable": true,
                     "orderable": true
                 },
 
-            ]
+            ], "initComplete": function () {
+                var r = $('#search-result tfoot tr');
+                $('#search-result thead').append(r);
+                this.api().columns().every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    $(input).appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            column.search($(this).val(), false, false,true).draw();
+                        });
+                });
+            }
         });
         // oTable.DataTable().buttons().container().appendTo( $('.col-sm-6:eq(0)', oTable.DataTable().table().container() ) );
         $('body').on('click','#search_button', function(e) {
