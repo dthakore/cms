@@ -27,8 +27,19 @@
             <div class="panel-body">
 
                 <a href="{{ url('admin/cases/create') }}" class="btn-primary btn btn-round btn-success" style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
-                <table class="table table-bordered bordered table-striped table-condensed datatable">
-
+                <table class="table table-bordered bordered table-striped table-condensed datatable" id="cases">
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -41,7 +52,7 @@
             oTable = $('.datatable').dataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 select: true,
                 buttons: [
 
@@ -73,7 +84,7 @@
                                 return $.camelCase(full['case_number']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -85,7 +96,7 @@
                                 return $.camelCase(full['client'].name);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -97,7 +108,7 @@
                                 return $.camelCase(full['complainant_name']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -109,7 +120,7 @@
                                 return moment(full['date_of_filing']).format('DD-MM-YYYY');
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -121,7 +132,7 @@
                                 return $.camelCase(full['court']);
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -135,7 +146,7 @@
                                 return '<span class="'+stag+'">'+full['stage']+'</span>';
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
                     {
@@ -147,7 +158,7 @@
                                 return moment(full['next_date']).format('DD-MM-YYYY')+ " <br><span class='next-date'> (" + moment(full['next_date']).fromNow()+")</span>";
                             }
                         },
-                        "searchable": false,
+                        "searchable": true,
                         "orderable": true
                     },
 
@@ -164,7 +175,23 @@
                         "searchable": false,
                         "orderable": false
                     }
-                ]
+                ],
+                "initComplete": function () {
+                var r = $('#cases tfoot tr');
+                $('#cases thead').append(r);
+
+                this.api().columns().every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.style.width ="100px";
+                    $(input).appendTo($(column.footer()).empty())
+                        .on('change', function () {
+
+                            column.search($(this).val(), false, false,true).draw();
+                        });
+                });
+
+            }
             });
             // oTable.DataTable().buttons().container().appendTo( $('.col-sm-6:eq(0)', oTable.DataTable().table().container() ) );
             $('#search-form').on('submit', function(e) {

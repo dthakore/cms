@@ -15,6 +15,7 @@
         "laravel/tinker": "^1.0",
         "league/csv": "^9.0",
         "spatie/laravel-permission": "^2.37",
+        "unisharp/laravel-ckeditor": "^4.7",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "^9.2"
     },

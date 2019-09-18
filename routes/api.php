@@ -21,7 +21,12 @@ Route::get('/cases/serverside', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         $cases = App\Cases::with(['entry', 'attachment','client']);
-
+//        $query = "select id from cases where case_id in (select case_id from case_entries GROUP BY case_id DESC)";
+//        $data = DB::select( DB::raw($query));
+//        foreach ($data as $item) {
+//            $cases[] = $item->id;
+//        }
+//        $cases = App\Cases::with(['entry', 'attachment','client'])->whereIn('id', $cases)->get();
         return \Yajra\DataTables\DataTables::of($cases)->addIndexColumn()->make(true);
     }
 ]);
@@ -143,9 +148,12 @@ Route::get('/case/search/entry', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
-        $casesEntries = App\CaseEntries::with(['cases'])->where('next_date','=', $nextdate)->get();
+        $casesEntriesWithNextDate = App\CaseEntries::with(['cases'])->where('next_date','=', $nextdate);
+        $allCasesEntries = App\CaseEntries::with(['cases'])
+            ->whereNull('next_date')->where('date','=',$nextdate)
+            ->union($casesEntriesWithNextDate);
 
-        return \Yajra\DataTables\DataTables::of($casesEntries)->addIndexColumn()->make(true);
+        return \Yajra\DataTables\DataTables::of($allCasesEntries)->addIndexColumn()->make(true);
     }
 ]);
 
