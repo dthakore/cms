@@ -316,7 +316,7 @@
         <nav class="footer-left">
             <ul class="nav">
                 <li>
-                    <a href="javascript:;">Copyright <i class="fa fa-copyright"></i> <span>Chaitanya Associates</span> {{ \Carbon\Carbon::now()->format('Y') }}. All rights reserved</a>
+                    Copyright <i class="fa fa-copyright"></i> <span>Nachiket Associates</span> {{ \Carbon\Carbon::now()->format('Y') }}. All rights reserved
                 </li>
             </ul>
         </nav>
