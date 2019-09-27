@@ -149,10 +149,10 @@ Route::get('/case/search/entry', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
-        $case_ids = App\CaseEntries::with(['cases'])->whereNull('next_date')->where('date','=',$nextdate)->get()->pluck('cases.case_id')->toArray();
+//        $case_ids = App\CaseEntries::with(['cases'])->whereNull('next_date')->where('date','=',$nextdate)->get()->pluck('cases.case_id')->toArray();
         $allCasesEntries = App\CaseEntries::with(['cases'])
             ->whereNull('next_date')->where('date','=',$nextdate);
-        $casesEntriesWithNextDate = App\CaseEntries::with(['cases'])->whereNotIn('case_id',$case_ids)->where('next_date','=', $nextdate)
+        $casesEntriesWithNextDate = App\CaseEntries::with(['cases'])->where('next_date','=', $nextdate)
             ->union($allCasesEntries);
         return \Yajra\DataTables\DataTables::of($casesEntriesWithNextDate)->addIndexColumn()->make(true);
     }

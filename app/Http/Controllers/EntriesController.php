@@ -80,9 +80,9 @@ class EntriesController extends Controller
         $model->comments = $request->input('comments');
         $model->case_id = $request->input('case_id');
         $model->created_at = Carbon::now()->format('Y-m-d H:i:s');
-
-        $this->sendMail($to,$request->input('content'));
-
+        if($request->input('send_mail') == "on") {
+            $this->sendMail($to,$request->input('content'));
+        }
         if ($request->hasFile('attachment')) {
             $imageName = $request->file('attachment')->getClientOriginalName();
             $filename = pathinfo($imageName, PATHINFO_FILENAME);
