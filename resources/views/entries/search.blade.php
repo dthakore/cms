@@ -7,61 +7,82 @@
 @endsection
 @section('style')
     <style type="text/css">
-        td > a{
+        td > a {
             margin-left: 10px;
             margin-right: 10px;
         }
+
         .rw-class {
             margin-bottom: 5px;
             padding-bottom: 30px;
         }
-        .control-label b{
-            font-size:18px;
+
+        .control-label b {
+            font-size: 18px;
         }
-        .align-center{
+
+        .align-center {
             text-align: center;
         }
-        .attach-box{
-            margin-right: 15px;display: block;padding: 35px;
+
+        .attach-box {
+            margin-right: 15px;
+            display: block;
+            padding: 35px;
             -webkit-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
             -moz-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
             box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        .attach-box img{
+
+        .attach-box img {
             width: 140px;
             margin: auto;
             display: block;
         }
+
         .attach-box-action a {
             margin-right: 60px;
             text-align: center;
         }
+
         .attach-box-action {
             margin-top: 30px;
         }
-        .dt-buttons{
-            position: absolute  !important;
-            float:none !important;
+
+        .dt-buttons {
+            position: absolute !important;
+            float: none !important;
             top: -70px !important;
             left: 85% !important;
         }
-        .buttons-csv{
+
+        .buttons-csv {
             background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
             color: white !important;
             font-weight: 700 !important;
             font-size: 14px !important;
             border-radius: 30px !important;
+            border-color: #0099cc !important;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .left {
+            float: left;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
 @endsection
 @section('content')
     <div class="main-content">
         <div class="panel">
             <div class="panel-heading border">
-                <ol class="breadcrumb mb0 no-padding">
+                <ol class="breadcrumb mb0 no-padding left">
                     <li>
                         <a href="{{ url('/') }}">Home</a>
                     </li>
@@ -69,27 +90,33 @@
                         <a href="{{ url('admin/search/entry') }}">Search Case Entry</a>
                     </li>
                 </ol>
+                <b class="breadcrumb mb0 no-padding right">
+                    Date : <?php echo date('d-m-Y'); ?>
+                </b>
+                <br>
             </div>
             <div class="panel-body">
                 <div class="form-group row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                             <label class="control-label" for="date"><b>Enter date to get causelist</b></label>
-                            <input id="date" type="text" class="form-control" name="date" >
+                            <input id="date" type="text" class="form-control" name="date">
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt25">
-                            <a href="javascript:void(0);" class="btn btn-primary btn-round" id="search_button">Search</a>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt30">
+                            <a href="javascript:void(0);" class="btn btn-primary btn-round"
+                               id="search_button">Search</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="search-result hide" id="search_result">
+                <div style="background:white" class="search-result hide" id="search_result">
                     <div class="row">
                         <div class="col-md-12">
                             <h4 class="text-uppercase page-header">Search Results</h4>
                         </div>
                         <div class="col-md-12">
-                            <table class="table table-bordered bordered table-striped table-condensed datatable" id="search-result">
+                            <table class="table table-bordered bordered table-striped table-condensed datatable"
+                                   id="search-result">
                                 <tfoot>
                                 <tr>
                                     <th></th>
@@ -135,11 +162,11 @@
             serverSide: true,
             searching: false,
             select: true,
-            dom:'bftrip',
+            dom: 'bftrip',
             ajax: {
                 url: "{{ url('/api/case/search/entry') }}",
                 data: function (d) {
-                    d.next_date =  next_date;
+                    d.next_date = next_date;
 
                 }
             },
@@ -154,22 +181,21 @@
             buttons: [
                 {
                     extend: 'csv',
-                    text:'Download CSV',
+                    text: 'Download CSV',
                     title: 'Coupons Data export',
-                    action: function (e, dt, node, config)
-                    {
+                    action: function (e, dt, node, config) {
                         $.ajax({
                             "url": "{{ url('/api/case/entry/export')}}",
                             "data": dt.ajax.params(),
-                            "success": function(res, status, xhr) {
+                            "success": function (res, status, xhr) {
                                 var result = JSON.parse(res);
                                 window.open(result.filename.file);
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     $.ajax({
                                         "url": "{{ url('/api/entries/delete/csv')}}",
-                                        "data": {"file":result.filename.delete},
-                                        "type":"POST",
-                                        "success": function(res, status, xhr) {
+                                        "data": {"file": result.filename.delete},
+                                        "type": "POST",
+                                        "success": function (res, status, xhr) {
                                             console.log("File deleted successfully");
                                         }
                                     })
@@ -179,7 +205,7 @@
                     }
                 },
             ],
-            columns:[
+            columns: [
                 {
                     title: '#', data: 'DT_RowIndex', name: 'DT_RowIndex', width: "2%",
                     "searchable": false,
@@ -187,11 +213,15 @@
                 },
 
                 {
-                    title: 'Case Number', data: 'cases.case_number', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
-                        if(full['cases'].case_number == null){
+                    title: 'Case Number',
+                    data: 'cases.case_number',
+                    name: 'date',
+                    width: "7%",
+                    render: function (data, type, full, meta) {
+                        if (full['cases'].case_number == null) {
                             return "N/A";
                         }
-                        else{
+                        else {
                             return $.camelCase(full['cases'].case_number);
                         }
                     },
@@ -199,23 +229,31 @@
                     "orderable": true
                 },
                 {
-                    title: 'Next Date', data: 'next_date', name: 'next_date', width: "7%", render: function ( data, type, full, meta ) {
-                        if(full['next_date'] == null){
+                    title: 'Next Date',
+                    data: 'next_date',
+                    name: 'next_date',
+                    width: "7%",
+                    render: function (data, type, full, meta) {
+                        if (full['next_date'] == null) {
                             return "N/A";
                         }
-                        else{
-                            return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date'> (" + moment(full['next_date']).fromNow()+")</span>";
+                        else {
+                            return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date'> (" + moment(full['next_date']).fromNow() + ")</span>";
                         }
                     },
                     "searchable": true,
                     "orderable": true
                 },
                 {
-                    title: 'Complainant Name', data: 'cases.complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
-                        if(full['cases'].complainant_name == null){
+                    title: 'Complainant Name',
+                    data: 'cases.complainant_name',
+                    name: 'date',
+                    width: "7%",
+                    render: function (data, type, full, meta) {
+                        if (full['cases'].complainant_name == null) {
                             return "N/A";
                         }
-                        else{
+                        else {
                             return $.camelCase(full['cases'].complainant_name);
                         }
                     },
@@ -223,26 +261,50 @@
                     "orderable": true
                 },
                 {
-                    title: 'Client', data: 'cases.client', name: 'cases.client', width: "7%", render: function ( data, type, full, meta ) {
-                        if(full['cases'].client == null){
+                    title: 'Client',
+                    data: 'cases.client.name',
+                    name: 'cases.client.name',
+                    width: "7%",
+                    render: function (data, type, full, meta) {
+                        if (full['cases'].client.name == null) {
                             return "N/A";
                         }
-                        else{
-                            return $.camelCase(full['cases'].client);
+                        else {
+                            return $.camelCase(full['cases'].client.name);
+                        }
+                    },
+                    "searchable": true,
+                    "orderable": true
+                }, {
+                    title: 'Coram',
+                    data: 'coram',
+                    name: 'coram',
+                    width: "7%",
+                    render: function (data, type, full, meta) {
+                        if (full['coram'] == null) {
+                            return "N/A";
+                        }
+                        else {
+                            return $.camelCase(full['coram']);
                         }
                     },
                     "searchable": true,
                     "orderable": true
                 },
+
                 {
-                    title: 'Stage', data: 'stage', name: 'stage', width: "10%", render: function ( data, type, full, meta ) {
-                        if(full['stage'] == null){
+                    title: 'Stage',
+                    data: 'stage',
+                    name: 'stage',
+                    width: "10%",
+                    render: function (data, type, full, meta) {
+                        if (full['stage'] == null) {
                             return "N/A";
                         }
-                        else{
+                        else {
                             var stage = full['stage'].toLowerCase();
                             var stag = stage.split(' ').join('_');
-                            return '<span class="'+stag+'">'+full['stage']+'</span>';
+                            return '<span class="' + stag + '">' + full['stage'] + '</span>';
                         }
                     },
                     "searchable": true,
@@ -252,13 +314,30 @@
             ], "initComplete": function () {
                 var r = $('#search-result tfoot tr');
                 $('#search-result thead').append(r);
-                this.api().columns().every(function () {
+                this.api().columns().every(function (i) {
                     var column = this;
                     var input = document.createElement("input");
+                    input.style.width ='100%';
                     $(input).appendTo($(column.footer()).empty())
                         .on('change', function () {
-                            column.search($(this).val(), false, false,true).draw();
+                            column.search($(this).val(), false, false, true).draw();
                         });
+                    if (i == 6)
+                    {
+
+                        var select = $('<select><option value="..."></option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $(this).val();
+
+                                column.search(val, true, false)
+                                    .draw(true);
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    }
                 });
             }
         });
@@ -269,23 +348,25 @@
             $("#search_result").removeClass('hide');
             $('#nextcases').addClass('hide');
         }
-        $('body').on('click','#search_button', function(e) {
+        $('body').on('click', '#search_button', function (e) {
             next_date = $("#date").val();
             $("#search_result").removeClass('hide');
             oTable.dataTable().fnDraw();
             oTable.fnAdjustColumnSizing();
-            if(next_date == ""){
+            if (next_date == "") {
                 $('#nextcases h3').text('No cases for tomorrow');
                 $('#nextcases').removeClass('hide');
 
                 $("#search_result").addClass('hide');
-            }else {
+            } else {
                 $('#nextcases').addClass('hide');
             }
             e.preventDefault();
         });
         $("#date").datepicker({
-            format:'dd-mm-yyyy'
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+
         });
     </script>
 
