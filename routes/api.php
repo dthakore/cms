@@ -22,6 +22,7 @@ Route::get('/cases/serverside', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         $cases = App\Cases::with(['entry', 'attachment','client']);
+
 //        $query = "select id from cases where case_id in (select case_id from case_entries GROUP BY case_id DESC)";
 //        $data = DB::select( DB::raw($query));
 //        foreach ($data as $item) {
