@@ -43,6 +43,10 @@
             margin-top: 30px;
             text-align: center;
         }
+        .cases .rw-class {
+            margin-bottom: 0px !important;
+            padding-bottom: 25px;
+        }
     </style>
 @endsection
 @section('content')
@@ -56,7 +60,7 @@
                     <li class="active">Case View</li>
                 </ol>
             </div>
-            <div class="panel-body">
+            <div class="panel-body cases">
                 <div class="row">
                     <div class="col-md-12">
                         <h4 class="text-uppercase page-header">Case Details</h4>
@@ -374,6 +378,19 @@
                                 "searchable": false,
                                 "orderable": true
                             },
+                            {
+                                title: 'Action',
+                                data: '',
+                                name: '',
+                                width: "7%",
+                                render: function (data, type, full, meta) {
+
+                                    return ' <a href="javascript:;"><i class="fa fa-trash swal-warning-cancel" data-id="' + full['id'] + '" title="Delete attribute"></i></a>'
+
+                                },
+                                "searchable": false,
+                                "orderable": false
+                            }
 
                         ]
                     });
