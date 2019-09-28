@@ -153,7 +153,7 @@ Route::get('/case/search/entry', [
 //        $case_ids = App\CaseEntries::with(['cases'])->whereNull('next_date')->where('date','=',$nextdate)->get()->pluck('cases.case_id')->toArray();
 //        $allCasesEntries = App\CaseEntries::with(['cases'])
 //            ->whereNull('next_date')->where('date','=',$nextdate);
-        $casesEntriesWithNextDate = App\CaseEntries::with(['cases'])->where('next_date','=', $nextdate);
+        $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate);
 
         return \Yajra\DataTables\DataTables::of($casesEntriesWithNextDate)->addIndexColumn()->make(true);
     }
@@ -165,8 +165,9 @@ Route::get('/case/entry/export', [
         ini_set('memory_limit','1024M');
 
         $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
+        $formattedNextDate = \Carbon\Carbon::parse($request->input('next_date'))->format('d-m-Y');
         $casesEntries = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate)->get();
-        $fileName =  \App\Helpers\GenerateCsv::createCsv($casesEntries);
+        $fileName =  \App\Helpers\GenerateCsv::createCsv($casesEntries,$formattedNextDate);
 
         echo json_encode([
             'token' => 1,
