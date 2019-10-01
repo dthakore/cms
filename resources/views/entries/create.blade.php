@@ -95,7 +95,17 @@
 
                         <div class="form-group row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
-                                <textarea name="content" id="content" class="maileditor" hidden></textarea>
+                                <div name="content" id="content" class="maileditor" hidden>
+                                    <span>
+                                        Dear Sir/Madam,
+                                    </span> <br><br><br>
+                                    [body] <br><br>
+                                    <span>
+                                        Regards,<br>
+                                        Chaitanya Joshi | Advocate <br>
+                                        Nachiketa Association
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -123,6 +133,9 @@
                     }
                 }
 
+                // var element = CKEDITOR.dom.element.createFromHtml( '<span>Dear Sir/Mam,</span>' );
+                // CKEDITOR.instances.content.insertElement( element );
+
                 $("#entry_form").validate({
                         rules: {
                             date: {
@@ -147,8 +160,10 @@
                         }
                     });
 
+                console.log('test'+$("input[name=date]").val());
                 $("#date, #next_date").datepicker({
-                    format:'dd-mm-yyyy'
+                    format:'yyyy-mm-dd',
+                    startDate: new Date($("input[name=date]").val()),
                 });
 
             </script>

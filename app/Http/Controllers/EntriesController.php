@@ -41,7 +41,7 @@ class EntriesController extends Controller
         $caseEntries = CaseEntries::where('case_id', $case['id'])->count();
         $next_date = '';
         if ($caseEntries > 0) {
-            $caseEntryLast = CaseEntries::where('case_id', $case['id'])->get()->last();
+            $caseEntryLast = CaseEntries::where('case_id', $case['id'])->orderBy('next_date', 'desc')->first();
             $next_date = $caseEntryLast->next_date;
         }
         return view('entries.create', ['case' => $case, 'next_date' => $next_date]);
