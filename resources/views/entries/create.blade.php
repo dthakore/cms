@@ -103,7 +103,7 @@
                                     <span>
                                         Regards,<br>
                                         Chaitanya Joshi | Advocate <br>
-                                        Nachiketa Association
+                                        Nachiketa Associates
                                     </span>
                                 </div>
                             </div>
