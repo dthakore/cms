@@ -47,6 +47,9 @@
             margin-bottom: 0px !important;
             padding-bottom: 25px;
         }
+        .cases .page-header {
+            margin: 20px 0 20px;
+        }
     </style>
 @endsection
 @section('content')
