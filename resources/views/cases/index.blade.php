@@ -6,24 +6,7 @@
     Attribute Manager
 @endsection
 @section('style')
-    <style type="text/css">
-        td > a {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        .datatable tr {
-            cursor: pointer;
-        }
-        select {
-            background-color: white;
-            height: 23px;
-            -webkit-appearance: none;
-            -webkit-border-radius: 0px;
-            cursor: pointer;
-            width: 100%;
-            border: 1px solid lightgrey;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
 @endsection
 @section('content')
     <div class="main-content">
@@ -37,7 +20,6 @@
                 </ol>
             </div>
             <div class="panel-body">
-
                 <a href="{{ url('admin/cases/create') }}" class="btn-primary btn btn-round btn-success"
                    style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
                 <table class="table table-bordered bordered table-striped table-condensed datatable" id="cases">
@@ -63,8 +45,8 @@
                     oTable = $('.datatable').dataTable({
                         processing: true,
                         serverSide: true,
-                        "dom": '<"top"><"clear">',
                         buttons: [],
+                        "dom": '<"top"l>rt<"bottom"ip><"clear">',
                         ajax: {
                             url: "{{ url('/api/cases/serverside') }}",
                             data: function (d) {
@@ -222,8 +204,7 @@
                                 var column = this;
                                 if (i == 6)
                                 {
-
-                                    var select = $('<select><option value="..."></option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
+                                    var select = $('<select><option value="..."> Select All</option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
                                         .appendTo($(column.footer()).empty())
                                         .on('change', function () {
                                             var val = $(this).val();
@@ -251,7 +232,7 @@
                         $(this).html(input);
 
                     } );
-                    $('.dataTable').on('click', 'tbody tr', function() {
+                    $('.dataTable').on('click', 'tbody tr td:not(:last-child)', function() {
                         console.log('API row values : ', table.row(this).data().id);
                         var url = '<?php echo url('admin/cases/view').'/' ?>'+table.row(this).data().id;
                         window.open(url, '_blank');
@@ -337,8 +318,6 @@
                     });
 
                 });
-
-
             </script>
     @endpush
 

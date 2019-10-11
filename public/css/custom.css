@@ -1,0 +1,82 @@
+td > a {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.rw-class {
+    margin-bottom: 5px;
+    padding-bottom: 30px;
+}
+.control-label b {
+    font-size: 18px;
+}
+.align-center {
+    text-align: center;
+}
+.attach-box {
+    margin-right: 15px;
+    display: block;
+    padding: 35px;
+    -webkit-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
+    box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.attach-box img {
+    width: 140px;
+    margin: auto;
+    display: block;
+}
+.attach-box-action a {
+    margin-right: 60px;
+    text-align: center;
+}
+
+.attach-box-action {
+    margin-top: 30px;
+}
+
+.dt-buttons {
+    position: absolute !important;
+    float: none !important;
+    top: -70px !important;
+    left: 85% !important;
+}
+
+.buttons-csv {
+    background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border-radius: 30px !important;
+    border-color: #0099cc !important;
+}
+
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+.datatable tr {
+    cursor: pointer;
+}
+select {
+    background-color: white;
+    height: 23px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    cursor: pointer;
+    width: 100%;
+    border: 1px solid lightgrey;
+    text-align-last: center;
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+}
+.result-text{
+    padding-left: 15px;
+    padding-right: 15px;
+}

@@ -56,11 +56,11 @@ class CaseController extends Controller
     public function store(Request $request)
     {
         $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-        if ($request->input('next_date')){
-            $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-        }else{
-            $nextdate = null;
-        }
+//        if ($request->input('next_date')){
+//            $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
+//        }else{
+//            $nextdate = null;
+//        }
         $model = new Cases();
 
         $model->case_number = $request->input('case_number');
@@ -70,7 +70,6 @@ class CaseController extends Controller
         $model->court = $request->input('court');
         $model->stage = $request->input('stage');
         $model->comments = $request->input('comments');
-        $model->next_date = $nextdate;
         $model->user_id = $request->input('user_id');
         $model->created_at = Carbon::now()->format('Y-m-d H:i:s');
         if ($model->save()){
@@ -87,13 +86,6 @@ class CaseController extends Controller
     {
         if ($request->isMethod('post')) {
             $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-            //$nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-
-            if ($request->input('next_date')){
-                $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-            }else{
-                $nextdate = null;
-            }
 
             $case->case_number = $request->input('case_number');
             $case->complainant_name = $request->input('complainant_name');
