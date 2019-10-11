@@ -88,13 +88,6 @@
                                     <option {{ ($case->stage == 'Disposed') ? 'selected' : '' }} value="Disposed">Disposed</option>
                                 </select>
                             </div>
-
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                    <label class="control-label" for="next_date">Next Date</label>
-                                    <input id="next_date" type="text" value="{{\Carbon\Carbon::parse($case->next_date)->format('d-m-Y')}}" class="form-control" name="next_date" >
-
-                            </div>
-
                         </div>
 
                         <div class="form-group row">

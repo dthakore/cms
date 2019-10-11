@@ -150,11 +150,16 @@ Route::get('/case/search/entry', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
+
+        if($request->input('totaldays') !=0){
+            $nextdates = next3days();
+            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->whereIn('next_date', $nextdates);
+        } else {
+            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate);
+        }
 //        $case_ids = App\CaseEntries::with(['cases'])->whereNull('next_date')->where('date','=',$nextdate)->get()->pluck('cases.case_id')->toArray();
 //        $allCasesEntries = App\CaseEntries::with(['cases'])
 //            ->whereNull('next_date')->where('date','=',$nextdate);
-        $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate);
-
         return \Yajra\DataTables\DataTables::of($casesEntriesWithNextDate)->addIndexColumn()->make(true);
     }
 ]);
@@ -163,10 +168,14 @@ Route::get('/case/entry/export', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
         ini_set('memory_limit','1024M');
-
         $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
         $formattedNextDate = \Carbon\Carbon::parse($request->input('next_date'))->format('d-m-Y');
-        $casesEntries = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate)->get();
+        if($request->input('totaldays') !=0){
+            $nextdates = next3days();
+            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->whereIn('next_date', $nextdates)->get();
+        } else {
+            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate)->get();
+        }
         $fileName =  \App\Helpers\GenerateCsv::createCsv($casesEntries,$formattedNextDate);
 
         echo json_encode([
@@ -183,3 +192,20 @@ Route::post('/entries/delete/csv', [
         echo $token; die;
     }
 ]);
+
+function next3days(){
+    $nextdates = array();
+    $date = time();
+    $next = strtotime('+3 days');
+    $count = 1;
+    while ($count <= 3) { // loop until next six
+        $date = strtotime('+1 day', $date);
+        $weekOfdays = date('l', $date);
+        if (strtolower($weekOfdays) == 'sunday') {
+            continue;
+        }
+        $nextdates[] = date('Y-m-d',$date);
+        $count ++;
+    }
+    return $nextdates;
+}

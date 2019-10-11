@@ -6,75 +6,8 @@
     Search Case Entry
 @endsection
 @section('style')
-    <style type="text/css">
-        td > a {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
 
-        .rw-class {
-            margin-bottom: 5px;
-            padding-bottom: 30px;
-        }
-
-        .control-label b {
-            font-size: 18px;
-        }
-
-        .align-center {
-            text-align: center;
-        }
-
-        .attach-box {
-            margin-right: 15px;
-            display: block;
-            padding: 35px;
-            -webkit-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
-            -moz-box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
-            box-shadow: 0.5px -0.5px 5.5px 0.5px rgba(0, 0, 0, 0.075);
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .attach-box img {
-            width: 140px;
-            margin: auto;
-            display: block;
-        }
-
-        .attach-box-action a {
-            margin-right: 60px;
-            text-align: center;
-        }
-
-        .attach-box-action {
-            margin-top: 30px;
-        }
-
-        .dt-buttons {
-            position: absolute !important;
-            float: none !important;
-            top: -70px !important;
-            left: 85% !important;
-        }
-
-        .buttons-csv {
-            background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            border-radius: 30px !important;
-            border-color: #0099cc !important;
-        }
-
-        .right {
-            float: right;
-        }
-
-        .left {
-            float: left;
-        }
-    </style>
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
 @endsection
@@ -109,10 +42,10 @@
                     </div>
                 </div>
 
-                <div style="background:white" class="search-result hide" id="search_result">
+                <div style="background:white" class="search-result" id="search_result">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="text-uppercase page-header">Search Results</h4>
+                            <h4 class="text-uppercase page-header result-text">Next 3 days result</h4>
                         </div>
                         <div class="col-md-12">
                             <table class="table table-bordered bordered table-striped table-condensed datatable"
@@ -125,14 +58,12 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="hide col-lg-12 col-md-12 col-sm-12 col-sm-12 align-center " id="nextcases">
-                    <h3>No cases for tomorrow</h3>
                 </div>
             </div>
         </div>
@@ -147,27 +78,29 @@
     <script type="text/javascript">
         $(".panel-body").css('height', window.innerHeight);
         var next_date;
+        var home;
         if ($("#date").val() == "") {
             next_date = new Date();
             var dd = String(next_date.getDate()).padStart(2, '0');
-            var mm = String(next_date.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var mm = String(next_date.getMonth() + 1).padStart(2, '0');
             var yyyy = next_date.getFullYear();
-
             next_date = dd + '-' + mm + '-' + yyyy;
+            home = 3;
         } else {
             next_date = $("#date").val();
+            home = 0;
         }
         oTable = $('.datatable').dataTable({
+            dom: 'Bfrtip',
             processing: true,
             serverSide: true,
             searching: false,
             select: true,
-            dom: 'bftrip',
             ajax: {
                 url: "{{ url('/api/case/search/entry') }}",
                 data: function (d) {
                     d.next_date = next_date;
-
+                    d.totaldays = home;
                 }
             },
             dataSrc: "data.data",
@@ -177,17 +110,17 @@
             },
             lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
             order: [[2, 'asc']],
-            dom: 'Bfrtip',
             buttons: [
                 {
                     extend: 'csv',
                     text: 'Download CSV',
-                    title: 'Coupons Data export',
+                    title: 'Cases Data export',
                     action: function (e, dt, node, config) {
                         $.ajax({
                             "url": "{{ url('/api/case/entry/export')}}",
                             "data": dt.ajax.params(),
                             "success": function (res, status, xhr) {
+                                console.log(dt.ajax.params());
                                 var result = JSON.parse(res);
                                 window.open(result.filename.file);
                                 setTimeout(function () {
@@ -296,7 +229,7 @@
                     title: 'Stage',
                     data: 'stage',
                     name: 'stage',
-                    width: "10%",
+                    width: "7%",
                     render: function (data, type, full, meta) {
                         if (full['stage'] == null) {
                             return "N/A";
@@ -324,8 +257,7 @@
                         });
                     if (i == 6)
                     {
-
-                        var select = $('<select><option value="..."></option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
+                        var select = $('<select><option value="...">Select All</option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function () {
                                 var val = $(this).val();
@@ -341,26 +273,13 @@
                 });
             }
         });
-        if (oTable.fnSettings().aoData.length === 0) {
-            $("#search_result").addClass('hide');
-            $('#nextcases').removeClass('hide');
-        } else {
-            $("#search_result").removeClass('hide');
-            $('#nextcases').addClass('hide');
-        }
+
         $('body').on('click', '#search_button', function (e) {
             next_date = $("#date").val();
-            $("#search_result").removeClass('hide');
+            home = 0;
+            $('.result-text').text('Search Result');
             oTable.dataTable().fnDraw();
             oTable.fnAdjustColumnSizing();
-            if (next_date == "") {
-                $('#nextcases h3').text('No cases for tomorrow');
-                $('#nextcases').removeClass('hide');
-
-                $("#search_result").addClass('hide');
-            } else {
-                $('#nextcases').addClass('hide');
-            }
             e.preventDefault();
         });
         $("#date").datepicker({
