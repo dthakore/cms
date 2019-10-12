@@ -56,18 +56,31 @@ class CaseController extends Controller
     public function store(Request $request)
     {
         $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-//        if ($request->input('next_date')){
-//            $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-//        }else{
-//            $nextdate = null;
-//        }
-        $model = new Cases();
+        if(strtolower($request->input('court')) == 'other') {
+            $court = $request->input('other-court');
+        } else {
+            $court = $request->input('court');
+        }
+        $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
+            $request->input('id-Rajasthan').')'.']';
 
+
+
+        $model = new Cases();
+        if($request->input('applicant') == 0){
+            $model->type = 1;
+            $model->role1 = 'Complainant';
+            $model->role2 = 'Respondent';
+        } else {
+            $model->type = 0;
+            $model->role2= 'Complainant';
+            $model->role1 = 'Respondent';
+        }
         $model->case_number = $request->input('case_number');
         $model->complainant_name = $request->input('complainant_name');
         $model->complainant_details = $request->input('complainant_details');
         $model->date_of_filing = $date_of_filing;
-        $model->court = $request->input('court');
+        $model->court = $court;
         $model->stage = $request->input('stage');
         $model->comments = $request->input('comments');
         $model->user_id = $request->input('user_id');
@@ -86,12 +99,18 @@ class CaseController extends Controller
     {
         if ($request->isMethod('post')) {
             $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-
+            if(strtolower($request->input('court')) == 'other') {
+                $court = $request->input('other-court');
+            } else {
+                $court = $request->input('court');
+            }
+            $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
+                $request->input('id-Rajasthan').')'.']';
             $case->case_number = $request->input('case_number');
             $case->complainant_name = $request->input('complainant_name');
             $case->complainant_details = $request->input('complainant_details');
             $case->date_of_filing = $date_of_filing;
-            $case->court = $request->input('court');
+            $case->court = $court;
             $case->stage = $request->input('stage');
             $case->comments = $request->input('comments');
             //$case->next_date = $nextdate;
