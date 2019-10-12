@@ -98,16 +98,16 @@
                                 "orderable": true
                             },
                             {
-                                title: 'Complainant Name',
-                                data: 'complainant_name',
-                                name: 'complainant_name',
+                                title: 'Opponent Name',
+                                data: 'opponent_name',
+                                name: 'opponent_name',
                                 width: "7%",
                                 render: function (data, type, full, meta) {
-                                    if (full['complainant_name'] == null) {
+                                    if (full['opponent_name'] == null) {
                                         return "N/A";
                                     }
                                     else {
-                                        return $.camelCase(full['complainant_name']);
+                                        return $.camelCase(full['opponent_name']);
                                     }
                                 },
                                 "searchable": true,

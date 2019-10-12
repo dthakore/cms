@@ -51,7 +51,7 @@
                 <div class="form-group row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                            <label class="control-label" for="date">Case number / Complainant Name</label>
+                            <label class="control-label" for="date">Case number / Opponent Name</label>
                             <input id="search" type="text" class="form-control" name="search">
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt25">
@@ -135,12 +135,12 @@
                             "orderable": true
                         },
                         {
-                            title: 'Camplainant Name', data: 'complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
-                                if(full['complainant_name'] == null){
+                            title: 'Camplainant Name', data: 'opponent_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
+                                if(full['opponent_name'] == null){
                                     return "N/A";
                                 }
                                 else{
-                                    return $.camelCase(full['complainant_name']);
+                                    return $.camelCase(full['opponent_name']);
                                 }
                             },
                             "searchable": false,

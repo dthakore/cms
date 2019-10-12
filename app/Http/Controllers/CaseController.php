@@ -77,7 +77,7 @@ class CaseController extends Controller
             $model->role1 = 'Respondent';
         }
         $model->case_number = $request->input('case_number');
-        $model->complainant_name = $request->input('complainant_name');
+        $model->opponent_name = $request->input('opponent_name');
         $model->complainant_details = $request->input('complainant_details');
         $model->date_of_filing = $date_of_filing;
         $model->court = $court;
@@ -107,7 +107,7 @@ class CaseController extends Controller
             $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
                 $request->input('id-Rajasthan').')'.']';
             $case->case_number = $request->input('case_number');
-            $case->complainant_name = $request->input('complainant_name');
+            $case->opponent_name = $request->input('opponent_name');
             $case->complainant_details = $request->input('complainant_details');
             $case->date_of_filing = $date_of_filing;
             $case->court = $court;

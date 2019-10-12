@@ -147,10 +147,10 @@
                             <div class="panel-body">
                                 <div class="rw-class">
                                     <div class="col-md-4">
-                                        <b>Complainant Name</b>
+                                        <b>Opponent Name</b>
                                     </div>
                                     <div class="col-md-8">
-                                        {{ $case->complainant_name }}
+                                        {{ $case->opponent_name }}
                                     </div>
                                 </div>
                                 <div class="rw-class">

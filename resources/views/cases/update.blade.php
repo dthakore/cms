@@ -160,8 +160,8 @@
                             </div>
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-sm-12">
-                                    <label class="control-label" for="complainant_name">Complainant Name</label>
-                                    <input id="complainant_name" value="{{$case->complainant_name}}"  type="text" class="form-control" name="complainant_name" >
+                                    <label class="control-label" for="opponent_name">Opponent Name</label>
+                                    <input id="opponent_name" value="{{$case->opponent_name}}"  type="text" class="form-control" name="opponent_name" >
 
                             </div>
 
@@ -226,7 +226,7 @@
                             case_number: {
                                 required: true,
                             },
-                            complainant_name: {
+                            opponent_name: {
                                 required: true,
                             },
                             date_of_filing: {

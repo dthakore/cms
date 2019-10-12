@@ -178,16 +178,16 @@
                     "orderable": true
                 },
                 {
-                    title: 'Complainant Name',
-                    data: 'cases.complainant_name',
+                    title: 'Opponent Name',
+                    data: 'cases.opponent_name',
                     name: 'date',
                     width: "7%",
                     render: function (data, type, full, meta) {
-                        if (full['cases'].complainant_name == null) {
+                        if (full['cases'].opponent_name == null) {
                             return "N/A";
                         }
                         else {
-                            return $.camelCase(full['cases'].complainant_name);
+                            return $.camelCase(full['cases'].opponent_name);
                         }
                     },
                     "searchable": true,
