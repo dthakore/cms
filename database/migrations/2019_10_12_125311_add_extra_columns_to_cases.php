@@ -14,10 +14,10 @@ class AddExtraColumnsToCases extends Migration
     public function up()
     {
         Schema::table('cases', function (Blueprint $table) {
-            $table->text('role2')->after('case_number');
-            $table->text('user2')->after('case_number');
-            $table->text('role1')->after('case_number');
-            $table->text('user1')->after('case_number');
+            $table->text('role2')->nullable()->after('case_number');
+            $table->text('user2')->nullable()->after('case_number');
+            $table->text('role1')->nullable()->after('case_number');
+            $table->text('user1')->nullable()->after('case_number');
             $table->integer('type')->unsigned()->after('case_number');
 
         });
