@@ -161,64 +161,11 @@
                             </div>
                         </div>
                         <div class="form-group row hide" id="applicant-yes">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="client">Client</label>
-                                <select id="user_id" type="text" class="form-control" name="user_id">
-                                    <option></option>
-                                    @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="role1">Client Role</label>
-                                <select id="role1" type="text" class="form-control" name="role1">
-                                    <option value="Complainant" selected>Complainant</option>
-                                    {{--<option value="Respondent">Respondent</option>--}}
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="stage">Opponent Name</label>
-                                <input id="opponent_name" type="text" class="form-control" name="opponent_name">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="stage">Opponent Role</label>
-                                <select id="role1" type="text" class="form-control" name="role1">
-                                    <option value="Responder" selected>Responder</option>
-                                    {{--<option value="Respondent">Respondent</option>--}}
-                                </select>
-                            </div>
+
                         </div>
                         <div class="form-group row hide" id="applicant-no">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="stage">Applicant Name</label>
-                                <input id="opponent_name" type="text" class="form-control" name="opponent_name">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="stage">Applicant Role</label>
-                                <select id="role1" type="text" class="form-control" name="role1">
-                                    <option value="Complainant" selected>Complainant</option>
-                                    {{--<option value="Respondent">Respondent</option>--}}
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="client">Client</label>
-                                <select id="user_id" type="text" class="form-control" name="user_id">
-                                    <option></option>
-                                    @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="role1">Client Role</label>
-                                <select id="role1" type="text" class="form-control" name="role1">
-                                    <option value="Complainant" Respondent>Respondent</option>
-                                    {{--<option value="Respondent">Respondent</option>--}}
-                                </select>
-                            </div>
-                        </div>
 
+                        </div>
                         <br>
 
                         <div class="form-group row">
@@ -353,11 +300,19 @@
                         if (this.value == 0) {
                             $("#applicant-yes").removeClass('hide');
                             $("#applicant-no").addClass('hide');
-
+                            $("#applicant-yes").empty();
+                            $("#applicant-no").empty();
+                            $("#applicant-yes").append('<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><input id="client_role" type="text" class="form-control" name="client_role"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Opponent Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Opponent Role</label><input id="opponent_role" type="text" class="form-control" name="opponent_role"/></div>').find('#applicant-yes');
                         }
                         if (this.value == 1) {
                             $("#applicant-no").removeClass('hide');
                             $("#applicant-yes").addClass('hide');
+                            $("#applicant-yes").empty();
+                            $("#applicant-no").empty();
+                            $("#applicant-no").append('<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Applicant Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Applicant Role</label><input id="opponent_role" type="text" class="form-control" name="opponent_role"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?>
+                                <option value="<?php echo $user->id; ?>"><?php echo $user->name;?>
+                                </option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><input id="client_role" type="text" class="form-control" name="client_role"></div>').find('#applicant-no'); // append the select and find it
+
                         }
                     });
                 });

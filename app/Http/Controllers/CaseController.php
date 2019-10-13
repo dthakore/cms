@@ -64,18 +64,14 @@ class CaseController extends Controller
         $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
             $request->input('id-Rajasthan').')'.']';
 
-
-
         $model = new Cases();
         if($request->input('applicant') == 0){
             $model->type = 1;
-            $model->role1 = 'Complainant';
-            $model->role2 = 'Respondent';
         } else {
-            $model->type = 0;
-            $model->role2= 'Complainant';
-            $model->role1 = 'Respondent';
+            $model->type = 2;
         }
+        $model->client_role = $request->input('client_role');
+        $model->opponent_role = $request->input('opponent_role');
         $model->case_number = $request->input('case_number');
         $model->opponent_name = $request->input('opponent_name');
         $model->complainant_details = $request->input('complainant_details');

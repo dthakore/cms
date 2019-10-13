@@ -14,7 +14,9 @@ class RenameColumnToCases extends Migration
     public function up()
     {
         Schema::table('cases', function (Blueprint $table) {
-            $table->renameColumn('opponent_name', 'opponent_name');
+            $table->renameColumn('complainant_name', 'opponent_name');
+            $table->renameColumn('role1', 'client_role');
+            $table->renameColumn('role2', 'opponent_role');
         });
     }
 
@@ -26,7 +28,9 @@ class RenameColumnToCases extends Migration
     public function down()
     {
         Schema::table('cases', function (Blueprint $table) {
-            $table->renameColumn('opponent_name', 'opponent_name');
+            $table->renameColumn('opponent_name', 'complainant_name');
+            $table->renameColumn('client_role', 'role1');
+            $table->renameColumn('opponent_role', 'role2');
         });
     }
 }
