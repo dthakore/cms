@@ -31,15 +31,16 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="statecommission">State</label>
+                                <label class="control-label" for="statecommission">Commission</label>
                                 <select id="state" type="text" class="form-control" name="state">
                                     <option value="0"> Select</option>
+                                    <option value="NCDRC">NCDRC</option>
                                     <option value="Gujarat">Gujarat</option>
                                     <option value="Rajasthan">Rajasthan</option>
                                 </select>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="statecommission">Disctrict</label>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12" id="district">
+                                <label class="control-label" for="statecommission">District</label>
                                 <select id="select-box" class="form-control">
                                     <option>Select</option>
                                 </select>
@@ -273,16 +274,20 @@
                 $('#state').change(function () {
                     var selectedValue = $(this).val();
                     $("#id-" + selectedValue).show();
+                    $('#district').hide();
                     $("#select-box").hide();
                     if (selectedValue == 0) {
+                        $('#district').show();
                         $("#select-box").show();
                         $("#id-Gujarat").hide();
                         $("#id-Rajasthan").hide();
                     }
                     if (selectedValue === 'Rajasthan') {
+                        $('#district').show();
                         $("#id-Gujarat").hide();
                     }
                     if (selectedValue === 'Gujarat') {
+                        $('#district').show();
                         $("#id-Rajasthan").hide();
                     }
 

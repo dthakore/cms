@@ -61,8 +61,13 @@ class CaseController extends Controller
         } else {
             $court = $request->input('court');
         }
-        $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
-            $request->input('id-Rajasthan').')'.']';
+        if($request->input('id-Gujarat') != "" || $request->input('id-Rajasthan') != "") {
+            $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
+                $request->input('id-Rajasthan').')'.']';
+        } else {
+            $court = $court.' ['.$request->input('state').']';
+        }
+
 
         $model = new Cases();
         if($request->input('applicant') == 0){
