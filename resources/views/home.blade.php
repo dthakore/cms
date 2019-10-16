@@ -89,12 +89,12 @@
                         "orderable": true
                     },
                     {
-                        title: 'Camplainant Name', data: 'cases.complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
-                            if(full['cases'].complainant_name == null){
+                        title: 'Camplainant Name', data: 'cases.opponent_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
+                            if(full['cases'].opponent_name == null){
                                 return "N/A";
                             }
                             else{
-                                return $.camelCase(full['cases'].complainant_name);
+                                return $.camelCase(full['cases'].opponent_name);
                             }
                         },
                         "searchable": false,
@@ -206,12 +206,12 @@
                         "orderable": true
                     },
                     {
-                        title: 'Camplainant Name', data: 'complainant_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
-                            if(full['complainant_name'] == null){
+                        title: 'Camplainant Name', data: 'opponent_name', name: 'date', width: "7%", render: function ( data, type, full, meta ) {
+                            if(full['opponent_name'] == null){
                                 return "N/A";
                             }
                             else{
-                                return $.camelCase(full['complainant_name']);
+                                return $.camelCase(full['opponent_name']);
                             }
                         },
                         "searchable": false,

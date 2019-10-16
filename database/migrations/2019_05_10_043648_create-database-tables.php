@@ -17,7 +17,7 @@ class CreateDatabaseTables extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('case_number', 255)->nullable(false);
-            $table->string('complainant_name', 255)->nullable(false);
+            $table->string('opponent_name', 255)->nullable(false);
             $table->text('complainant_details')->nullable();
             $table->date('date_of_filing')->nullable(false);
             $table->string('court')->nullable();

@@ -135,7 +135,7 @@ Route::get('/case/search/serverside', [
                 $query->where('case_number','like','%'.$request->input('term').'%')
                     ->where('user_id', $request->input('user'));
             })->orWhere(function ($query) use ($request) {
-                $query->where('complainant_name', 'like', '%' . $request->input('term') . '%')
+                $query->where('opponent_name', 'like', '%' . $request->input('term') . '%')
                     ->where('user_id', $request->input('user'));
             })->get();
 

@@ -16,7 +16,7 @@ class Cases extends Authenticatable
     protected $fillable = array(
         'id',
         'case_number',
-        'complainant_name',
+        'opponent_name',
         'complainant_details',
         'date_of_filing',
         'court',
