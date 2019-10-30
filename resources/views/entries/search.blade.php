@@ -6,11 +6,12 @@
     Search Case Entry
 @endsection
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
 @endsection
+
 @section('content')
     <div class="main-content">
         <div class="panel">
@@ -20,7 +21,7 @@
                         <a href="{{ url('/') }}">Home</a>
                     </li>
                     <li>
-                        <a href="{{ url('admin/search/entry') }}">Search Case Entry</a>
+                        <a href="{{ url('admin/search/entry') }}">Causelist</a>
                     </li>
                 </ol>
                 <b class="breadcrumb mb0 no-padding right">
@@ -41,11 +42,48 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-12">
+                    <br>
+                    <div class="box-tab justified">
+                        <ul class="nav nav-tabs">
+                            @php
+                                $nextDates = next3days();
+                                foreach ($nextDates as $next):
+                                $class = ($next === reset($nextDates))?"active":"";
+                                echo '<li class="'.$class.'"><a href="#next'. date('d-m-Y',strtotime($next)).'" data-toggle="tab">'.date('d M, Y',strtotime($next)).'</a></li>';
+                                $nextArr[] = 'next'. date('d-m-Y',strtotime($next));
+                                endforeach;
+                            @endphp
 
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane" id="<?=$nextArr[0]?>">
+                            </div>
+                            <div class="tab-pane" id="<?=$nextArr[1]?>">
+                            </div>
+                            <div class="tab-pane" id="<?=$nextArr[2]?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--<table class="table table-bordered bordered table-striped table-condensed datatable"--}}
+                       {{--id="search-result" style="width: -webkit-fill-available;">--}}
+                    {{--<tfoot>--}}
+                    {{--<tr>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                        {{--<th></th>--}}
+                    {{--</tr>--}}
+                    {{--</tfoot>--}}
+                {{--</table>--}}
                 <div style="background:white" class="search-result" id="search_result">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="text-uppercase page-header result-text">Next 3 days result</h4>
+                            <h4 class="text-uppercase page-header result-text"></h4>
                         </div>
                         <div class="col-md-12">
                             <table class="table table-bordered bordered table-striped table-condensed datatable"
@@ -80,16 +118,27 @@
         var next_date;
         var home;
         if ($("#date").val() == "") {
-            next_date = new Date();
-            var dd = String(next_date.getDate()).padStart(2, '0');
-            var mm = String(next_date.getMonth() + 1).padStart(2, '0');
-            var yyyy = next_date.getFullYear();
-            next_date = dd + '-' + mm + '-' + yyyy;
-            home = 3;
+            // next_date = new Date();
+            // var dd = String(next_date.getDate()).padStart(2, '0');
+            // var mm = String(next_date.getMonth() + 1).padStart(2, '0');
+            // var yyyy = next_date.getFullYear();
+            var next_date_str = '<?php echo $nextArr[0]; ?>';
+            var res = next_date_str.split("next");
+            next_date = res[1];
+            home = 0;
         } else {
             next_date = $("#date").val();
             home = 0;
         }
+
+        $('.nav-tabs > li > a').click( function() {
+            var activeTab = $(this);
+            var str = activeTab.attr('href');
+            var res = str.split("#next");
+            next_date = res[1];
+            oTable.dataTable().fnDraw();
+            oTable.fnAdjustColumnSizing();
+        } );
         oTable = $('.datatable').dataTable({
             dom: 'Bfrtip',
             processing: true,
@@ -250,13 +299,12 @@
                 this.api().columns().every(function (i) {
                     var column = this;
                     var input = document.createElement("input");
-                    input.style.width ='100%';
+                    input.style.width = '100%';
                     $(input).appendTo($(column.footer()).empty())
                         .on('change', function () {
                             column.search($(this).val(), false, false, true).draw();
                         });
-                    if (i == 6)
-                    {
+                    if (i == 6) {
                         var select = $('<select><option value="...">Select All</option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function () {
@@ -277,6 +325,7 @@
         $('body').on('click', '#search_button', function (e) {
             next_date = $("#date").val();
             home = 0;
+            $('.box-tab').hide();
             $('.result-text').text('Search Result');
             oTable.dataTable().fnDraw();
             oTable.fnAdjustColumnSizing();

@@ -80,3 +80,18 @@ select {
     padding-left: 15px;
     padding-right: 15px;
 }
+.box-tab .tab-content {
+    overflow: hidden;
+    padding: 0px;
+    background-color: #fff;
+}
+.box-tab .nav-tabs {
+    position: relative;
+    bottom: -1px;
+    margin: 0 auto;
+    padding: 0;
+    border-bottom: 1px grey solid;
+    background: #F0F0F0;
+    font-weight: bolder;
+    font-size: 16px;
+}
