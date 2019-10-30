@@ -183,7 +183,7 @@
                         <li>
                             <a href="{{ url('/') }}">
                                 <i class="fa fa-dashboard"></i>
-                                <span>Dashboard</span>
+                                <span>Causelist</span>
                             </a>
                         </li>
                         <li>
