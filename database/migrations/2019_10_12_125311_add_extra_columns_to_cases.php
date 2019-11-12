@@ -31,7 +31,10 @@ class AddExtraColumnsToCases extends Migration
     public function down()
     {
         Schema::table('cases', function (Blueprint $table) {
-            //
+            $table->dropColumn('role2');
+            $table->dropColumn('role1');
+            $table->dropColumn('user2');
+            $table->dropColumn('user1');
         });
     }
 }

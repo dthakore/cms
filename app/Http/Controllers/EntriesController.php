@@ -53,7 +53,6 @@ class EntriesController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         $date = Carbon::parse($request->input('date'))->format('Y-m-d H:i:s');
         if ($request->input('next_date')) {
             $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
@@ -63,10 +62,10 @@ class EntriesController extends Controller
         //$nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
 
         $case = Cases::where('id', $request->input('case_id'))->first();
-        $to = \App\User::where('id',$case->user_id)->first()->email;
+        $to = \App\User::where('id', $case->user_id)->first()->email;
         $model = new CaseEntries();
         $model->date = $date;
-        $model->coram = $request->input('coram');
+        //$model->coram = $request->input('coram');
         $model->stage = $request->input('stage');
 
 //        if ($nextdate > $case->next_date){
@@ -74,14 +73,14 @@ class EntriesController extends Controller
 //        }
         $case->stage = $request->input('stage');
         $case->save();
-
-
         $model->next_date = $nextdate;
+        $model->bench = $request->input('bench');
+        $model->is_order = ($request->input('is_order') == 'on') ? 1 : 0;
         $model->comments = $request->input('comments');
         $model->case_id = $request->input('case_id');
         $model->created_at = Carbon::now()->format('Y-m-d H:i:s');
-        if($request->input('send_mail') == "on") {
-            $this->sendMail($to,$request->input('content'));
+        if ($request->input('send_mail') == "on") {
+            $this->sendMail($to, $request->input('content'));
         }
         if ($request->hasFile('attachment')) {
             $imageName = $request->file('attachment')->getClientOriginalName();
@@ -94,6 +93,9 @@ class EntriesController extends Controller
         }
 
         if ($model->save()) {
+            if ($model->next_date != null) {
+                $this->createNextEntry($model);
+            }
             if ($request->hasFile('attachment')) {
                 $request->file('attachment')->move(public_path('attachment'), $attachment);
             }
@@ -102,33 +104,49 @@ class EntriesController extends Controller
 
     }
 
+    public function createNextEntry($oldEntry)
+    {
+        $model = new CaseEntries();
+        $model->date = $oldEntry->next_date;
+        $model->bench = $oldEntry->bench;
+        $model->stage = $oldEntry->stage;
+        $model->case_id = $oldEntry->case_id;
+        $model->created_at = Carbon::now()->format('Y-m-d H:i:s');
+        $model->save();
+    }
+
     /*
      * update case
      */
 
     public function update(Request $request, CaseEntries $entries)
     {
+        $nextdateEntry = $entries->next_date;
+
         if ($request->isMethod('post')) {
 
             //dd($request->all());
 
             $date = Carbon::parse($request->input('date'))->format('Y-m-d');
-            //$nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d');
+            $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d');
+            $nextEntry = CaseEntries::where('case_id', $request->input('case_id'))->where('date', $nextdateEntry)->first();
 
-            if ($request->input('next_date')) {
-                $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
-            } else {
-                $nextdate = null;
-            }
 
-            $case = $entries->cases;
+//            if ($request->input('next_date')) {
+//                $nextdate = Carbon::parse($request->input('next_date'))->format('Y-m-d H:i:s');
+//            } else {
+//                $nextdate = $request->input('next_date');
+//            }
+
+//            $case = $entries->cases;
             $entries->date = $date;
-            $entries->coram = $request->input('coram');
+            $entries->bench = $request->input('bench');
             $entries->stage = $request->input('stage');
-            if ($nextdate > $case->next_date) {
-                $case->next_date = $nextdate;
-                $case->save();
-            }
+
+//            if ($nextdate > $case->next_date) {
+//                $case->next_date = $nextdate;
+//                $case->save();
+//            }
             $entries->next_date = $nextdate;
             $entries->comments = $request->input('comments');
             $entries->case_id = $request->input('case_id');
@@ -152,6 +170,15 @@ class EntriesController extends Controller
             }
 
             if ($entries->save()) {
+                if ($nextEntry == null) {
+                    $this->createNextEntry($entries);
+                } else {
+                    $nextEntry->date = $entries->next_date;
+                    $nextEntry->bench = $entries->bench;
+                    $nextEntry->stage = $entries->stage;
+                    $nextEntry->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+                    $nextEntry->save();
+                }
                 if ($request->hasFile('attachment')) {
                     $request->file('attachment')->move(public_path('attachment'), $attachment);
                 }
@@ -177,12 +204,27 @@ class EntriesController extends Controller
         ]);
     }
 
+    public function updateItemNumber(Request $request)
+    {
+        $data = $request->input('data');
+        foreach ($data as $id => $itemNumber) {
+            $caseEntry = CaseEntries::where('id', $id)->first();
+            $caseEntry->item_number = $itemNumber;
+            $caseEntry->save();
+        }
+        Session::flash('success', 'Item Numbers are successfully updated.');
+
+        return response()->json([
+            'result' => 1
+        ]);
+    }
+
     public function searchEntry(Request $request)
     {
         return view('entries.search');
     }
 
-    public function sendMail($to,$message)
+    public function sendMail($to, $message)
     {
 //        $to = 'devangi.thakore@gmail.com';
         $subject = 'Case Status';

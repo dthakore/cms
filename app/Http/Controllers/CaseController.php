@@ -56,19 +56,21 @@ class CaseController extends Controller
     public function store(Request $request)
     {
         $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-        if(strtolower($request->input('court')) == 'other') {
-            $court = $request->input('other-court');
+        $forum =  \App\Helpers\Courts::getCourtName($request->input('forum'));
+        ($request->input('state') == '0')?$state = '':$state = $request->input('state');
+        ($request->input('id-Rajasthan') == '0')?$id_raj = '':$id_raj = $request->input('id-Rajasthan');
+        ($request->input('id-Gujarat') == '0')?$id_guj = '':$id_guj = $request->input('id-Gujarat');
+        if($request->input('state') == 0 && $request->input('court') == null){
+            $court = $forum;
         } else {
-            $court = $request->input('court');
-        }
-        if($request->input('id-Gujarat') != "" || $request->input('id-Rajasthan') != "") {
-            $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
-                $request->input('id-Rajasthan').')'.']';
-        } else {
-            $court = $court.' ['.$request->input('state').']';
-        }
+            if($id_guj == '' && $id_raj == '') {
+                $court = $forum.' ['.$request->input('court').' ]';
+            } else {
+                $court = $forum.' ['.$request->input('court').' -'.$state.' ('.$id_guj.
+                    $id_raj.')'.' ]';
+            }
 
-
+        }
         $model = new Cases();
         if($request->input('applicant') == 0){
             $model->type = 1;
@@ -77,11 +79,13 @@ class CaseController extends Controller
         }
         $model->client_role = $request->input('client_role');
         $model->opponent_role = $request->input('opponent_role');
+        $model->opponent_advocates = $request->input('opponent_advocate');
         $model->case_number = $request->input('case_number');
+        $model->court = $court;
         $model->opponent_name = $request->input('opponent_name');
         $model->complainant_details = $request->input('complainant_details');
         $model->date_of_filing = $date_of_filing;
-        $model->court = $court;
+        $model->case_type = $request->input('case_type');
         $model->stage = $request->input('stage');
         $model->comments = $request->input('comments');
         $model->user_id = $request->input('user_id');
@@ -100,21 +104,13 @@ class CaseController extends Controller
     {
         if ($request->isMethod('post')) {
             $date_of_filing = Carbon::parse($request->input('date_of_filing'))->format('Y-m-d H:i:s');
-            if(strtolower($request->input('court')) == 'other') {
-                $court = $request->input('other-court');
-            } else {
-                $court = $request->input('court');
-            }
-            $court = $court.' ['.$request->input('state').'('.$request->input('id-Gujarat').
-                $request->input('id-Rajasthan').')'.']';
-            $case->case_number = $request->input('case_number');
+           $case->case_number = $request->input('case_number');
             $case->opponent_name = $request->input('opponent_name');
             $case->complainant_details = $request->input('complainant_details');
             $case->date_of_filing = $date_of_filing;
-            $case->court = $court;
+            //$case->court = $court;
             $case->stage = $request->input('stage');
             $case->comments = $request->input('comments');
-            //$case->next_date = $nextdate;
             $case->user_id = $request->input('user_id');
             $case->updated_at = Carbon::now()->format('Y-m-d H:i:s');
 

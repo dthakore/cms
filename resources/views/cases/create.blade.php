@@ -31,7 +31,26 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="statecommission">Commission</label>
+                                <label class="control-label" for="forum">Select Forum</label>
+                                <select id="forum" type="text" class="form-control" name="forum">
+                                    <option value="0"> Select</option>
+                                    <option value="sc">Supreme Court</option>
+                                    <option value="hc">High Courts</option>
+                                    <option value="dc">District Courts</option>
+                                    <option value="cf">Consumer Forums</option>
+                                    <option value="tribunals">Tribunals</option>
+                                    <option value="cn">CNR Number</option>
+                                    <option value="cc">Custom Courts</option>
+                                    <option value="other">Other Options</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group row hide" id="dc-form">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
+                                <label class="control-label" for="statecommission">State</label>
                                 <select id="state" type="text" class="form-control" name="state">
                                     <option value="0"> Select</option>
                                     <option value="NCDRC">NCDRC</option>
@@ -130,20 +149,30 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row hide" id="court-field">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="court">Court</label>
-                                <select id="court" type="text" class="form-control" name="court">
-                                    <option value="0"> Select</option>
-                                    <option value="High-Court">High Court</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                <input id="court" type="text" class="form-control" name="court"/>
+
+                                {{--<select id="court" type="text" class="form-control" name="court">--}}
+                                {{--<option value="0"> Select</option>--}}
+                                {{--<option value="High-Court">High Court</option>--}}
+                                {{--<option value="Other">Other</option>--}}
+                                {{--</select>--}}
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 hide" id="other">
-                                <label class="control-label" for="other-court">Other</label>
-                                <input id="other-court" type="text" class="form-control" name="other-court"/>
+                            {{--<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 hide" id="other">--}}
+                            {{--<label class="control-label" for="other-court">Other</label>--}}
+                            {{--<input id="other-court" type="text" class="form-control" name="other-court"/>--}}
+                            {{--</div>--}}
+                        </div>
+                        <div class="form-group row" id="casetype_form">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12" id="casetype_label">
+                                <label class="control-label" for="case_type">Case Type</label>
+                                <input id="case_type" type="text" class="form-control" name="case_type">
                             </div>
                         </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <br>
                         <hr>
                         <br>
@@ -300,6 +329,27 @@
                         $('#other').addClass('hide');
                     }
                 });
+                $('#forum').change(function () {
+                    var selectedValue = $(this).val();
+                    $('body').find('#court_form').remove();
+                    $('#court-field').addClass('hide');
+                    if (selectedValue === 'hc') {
+                        $('#dc-form').addClass('hide');
+                        $("<div class=\"form-group row\" id=\"court_form\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-sm-12\" id=\"court_label\"><label class=\"control-label\" for=\"court\">Select Court</label>" +
+                            "<select id=\"court\" type=\"text\" class=\"form-control\" name=\"court\"><option value='Rajasthan High Court at Jodhpur'>Rajasthan High Court at Jodhpur</option><option value='Rajasthan High Court at Jaipur'>Rajasthan High Court at Jaipur</option>" +
+                            "<option value='Gujarat High Court'>Gujarat High Court</option></select></div></div>").insertBefore("#casetype_form");
+                    } else if (selectedValue === 'dc' || selectedValue === 'cf') {
+                        $('#dc-form').removeClass('hide');
+                        $('#court-field').removeClass('hide');
+                    } else if (selectedValue === 'sc') {
+                        $('#dc-form').addClass('hide');
+                        $('#court-field').addClass('hide');
+                    } else {
+                        $('#dc-form').addClass('hide');
+                        $('#court-field').removeClass('hide');
+                    }
+
+                });
                 $('[name="applicant"]').change(function () {
                     $('[name="applicant"]:checked').each(function () {
                         if (this.value == 0) {
@@ -307,16 +357,15 @@
                             $("#applicant-no").addClass('hide');
                             $("#applicant-yes").empty();
                             $("#applicant-no").empty();
-                            $("#applicant-yes").append('<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><select id="client_role" type="text" class="form-control" name="client_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Opponent Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Opponent Role</label><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div>').find('#applicant-yes');
+                            $("#applicant-yes").append('<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><select id="client_role" type="text" class="form-control" name="client_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div>' +
+                                '<div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="stage">Opponent Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="stage">Opponent Role</label><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div><div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="role2advocate">Opponent Advocate(s)</label><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div>').find('#applicant-yes');
                         }
                         if (this.value == 1) {
                             $("#applicant-no").removeClass('hide');
                             $("#applicant-yes").addClass('hide');
                             $("#applicant-yes").empty();
                             $("#applicant-no").empty();
-                            $("#applicant-no").append('<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Applicant Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="stage">Applicant Role</label><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?>
-                                <option value="<?php echo $user->id; ?>"><?php echo $user->name;?>
-                                </option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><select id="client_role" type="text" class="form-control" name="client_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div>').find('#applicant-no'); // append the select and find it
+                            $("#applicant-no").append('<div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="stage">Applicant Name</label><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div><div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="stage">Applicant Role</label><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div><div class="col-lg-4 col-md-4 col-sm-4 col-sm-12"><label class="control-label" for="role1advocate">Applicant Advocate(s)</label><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="client">Client</label><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id; ?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div><div class="col-lg-6 col-md-6 col-sm-6 col-sm-12"><label class="control-label" for="role1">Client Role</label><select id="client_role" type="text" class="form-control" name="client_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div>').find('#applicant-no'); // append the select and find it
 
                         }
                     });

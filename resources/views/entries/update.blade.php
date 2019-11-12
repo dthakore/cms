@@ -33,14 +33,16 @@
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="date">Date *</label>
-                                <input id="date" type="text" class="form-control" value="{{\Carbon\Carbon::parse($entries->date)->format('d-m-Y')}}" name="date" >
+                                <input readonly id="date" type="text" class="form-control" value="{{\Carbon\Carbon::parse($entries->date)->format('d-m-Y')}}" name="date" >
                                 <input value="{{$entries->case_id}}"  type="hidden" name="case_id" >
-
                             </div>
-
+                            {{--<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">--}}
+                                {{--<label class="control-label" for="coram">Coram</label>--}}
+                                {{--<input id="coram" type="text" value="{{$entries->coram}}" class="form-control" name="coram" >--}}
+                            {{--</div>--}}
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="coram">Coram</label>
-                                <input id="coram" type="text" value="{{$entries->coram}}" class="form-control" name="coram" >
+                                <label class="control-label" for="coram">Bench</label>
+                                <input id="bench" type="text" class="form-control" name="bench"value="{{$entries->bench}}" >
                             </div>
                         </div>
 
@@ -61,7 +63,6 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="next_date">Next Date</label>
                                 <input id="next_date" type="text" value="{{\Carbon\Carbon::parse($entries->next_date)->format('d-m-Y')}}"  class="form-control" name="next_date" >
-
                             </div>
 
                         </div>
@@ -72,8 +73,19 @@
                                 <textarea rows="10" id="comments"  type="text" class="form-control" name="comments" >{{$entries->comments}}</textarea>
                             </div>
                         </div>
-
                         <div class="form-group row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                                <input name="is_order" id="is_order" type="checkbox" onchange="isOrder()" value="{{$entries->attachment}}"> Is An Order
+                            </div>
+                        </div>
+
+                        {{--<div class="form-group row hide" id="attachment-div">--}}
+                            {{--<div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">--}}
+                                {{--<label class="control-label" for="attachment">Attachment</label>--}}
+                                {{--<input id="attachment" type="file" class="form-control" name="attachment" >--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        <div class="form-group row" >
                             <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                                 <label class="control-label" for="attachment">Attachment</label>
                                 <input id="attachment" type="file" class="form-control" name="attachment" value="{{$entries->attachment}}" >
@@ -102,7 +114,6 @@
                         date: {
                             required: true,
                         },
-
                         stage: {
                             required: true,
                         },
@@ -120,11 +131,24 @@
                         return true;
                     }
                 });
+                var startDate = $('#date').val();
 
-                $("#date, #next_date").datepicker({
-                    format:'dd-mm-yyyy'
+                $("#next_date").datepicker({
+                    startDate: startDate,
+                    format:'dd-mm-yyyy',
+
                 });
 
+                function isOrder(){
+                    if($('#is_order').is(':checked')){
+                        $('#attachment-div').removeClass('hide');
+                    } else {
+                        $('#attachment-div').addClass('hide');
+                    }
+                }
+                if($('#attachment').val() != ''){
+                    $('#is_order').prop('checked', true);
+                }
             </script>
     @endpush
 

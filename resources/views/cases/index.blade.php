@@ -32,7 +32,6 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
                     </tr>
                     </tfoot>
                 </table>
@@ -158,22 +157,6 @@
                                         var stage = full['stage'].toLowerCase();
                                         var stag = stage.split(' ').join('_');
                                         return '<span class="' + stag + '">' + full['stage'] + '</span>';
-                                    }
-                                },
-                                "searchable": true,
-                                "orderable": true
-                            },
-                            {
-                                title: 'Next Date',
-                                data: 'next_date',
-                                name: 'next_date',
-                                width: "10%",
-                                render: function (data, type, full, meta) {
-                                    if (full['next_date'] == null) {
-                                        return "N/A";
-                                    }
-                                    else {
-                                        return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date'> (" + moment(full['next_date']).fromNow() + ")</span>";
                                     }
                                 },
                                 "searchable": true,
