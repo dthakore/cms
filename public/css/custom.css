@@ -40,7 +40,7 @@ td > a {
     position: absolute !important;
     float: none !important;
     top: -70px !important;
-    left: 85% !important;
+    left: 70% !important;
 }
 
 .buttons-csv {
@@ -95,3 +95,17 @@ select {
     font-weight: bolder;
     font-size: 16px;
 }
+.box-tab .nav-tabs li.active a, .box-tab .nav-tabs li.active a:hover {
+    color: #616161;
+    background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
+    color: white !important;
+}
+.btn-export{
+    background-image: none !important;
+    color: black !important;
+    font-weight: unset !important;
+    font-size: 12px !important;
+    border-radius: 0 !important;
+    border-color: grey!important;
+}
+

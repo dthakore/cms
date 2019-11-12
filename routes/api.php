@@ -23,6 +23,7 @@ Route::get('/cases/serverside', [
     'uses' => function (Request $request) {
         $cases = App\Cases::with(['entry', 'attachment','client']);
 
+
 //        $query = "select id from cases where case_id in (select case_id from case_entries GROUP BY case_id DESC)";
 //        $data = DB::select( DB::raw($query));
 //        foreach ($data as $item) {
@@ -146,6 +147,7 @@ Route::get('/case/search/serverside', [
     }
 ]);
 
+
 Route::get('/case/search/entry', [
     'as'   => 'serverSide',
     'uses' => function (Request $request) {
@@ -155,12 +157,26 @@ Route::get('/case/search/entry', [
             $nextdates = next3days();
             $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->whereIn('next_date', $nextdates);
         } else {
-            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate);
+            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('date','=', $nextdate);
         }
 //        $case_ids = App\CaseEntries::with(['cases'])->whereNull('next_date')->where('date','=',$nextdate)->get()->pluck('cases.case_id')->toArray();
 //        $allCasesEntries = App\CaseEntries::with(['cases'])
 //            ->whereNull('next_date')->where('date','=',$nextdate);
         return \Yajra\DataTables\DataTables::of($casesEntriesWithNextDate)->addIndexColumn()->make(true);
+    }
+]);
+
+Route::get('/get/cases', [
+    'as'   => 'serverSide',
+    'uses' => function (Request $request) {
+        $cases = array();
+        $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
+        $query = "select `case_number`,item_number,case_entries.id from cases,case_entries where case_entries.date='".$nextdate."' and case_entries.case_id=cases.id";
+        $data = DB::select( DB::raw($query));
+        foreach ($data as $item) {
+            $cases[$item->id] = array('case_number'=>$item->case_number,'item_number'=>$item->item_number);
+        }
+        return json_encode($cases);
     }
 ]);
 
@@ -172,9 +188,9 @@ Route::get('/case/entry/export', [
         $formattedNextDate = \Carbon\Carbon::parse($request->input('next_date'))->format('d-m-Y');
         if($request->input('totaldays') !=0){
             $nextdates = next3days();
-            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->whereIn('next_date', $nextdates)->get();
+            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->whereIn('date', $nextdates)->get();
         } else {
-            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->where('next_date','=', $nextdate)->get();
+            $casesEntries = App\CaseEntries::with(['cases','cases.client'])->where('date','=', $nextdate)->get();
         }
         $fileName =  \App\Helpers\GenerateCsv::createCsv($casesEntries,$formattedNextDate);
 

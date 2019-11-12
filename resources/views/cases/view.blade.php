@@ -16,6 +16,9 @@
             margin-bottom: 5px;
             padding-bottom: 30px;
         }
+        .margin10{
+            margin-left: 10px !important;
+        }
 
         .attach-box {
             text-align: center;
@@ -43,10 +46,12 @@
             margin-top: 30px;
             text-align: center;
         }
+
         .cases .rw-class {
-            margin-bottom: 0px !important;
+            margin-bottom: 10px !important;
             padding-bottom: 25px;
         }
+
         .cases .page-header {
             margin: 20px 0 20px;
         }
@@ -81,10 +86,10 @@
                                 </div>
                                 <div class="rw-class">
                                     <div class="col-md-4">
-                                        <b>Court</b>
+                                        <b>Date of filing</b>
                                     </div>
                                     <div class="col-md-8">
-                                        {{ $case->court}}
+                                        {{ \Carbon\Carbon::parse($case->date_of_filing)->format('d-m-Y') }}
                                     </div>
                                 </div>
                                 <div class="rw-class">
@@ -105,7 +110,55 @@
                                 </div>
                                 <div class="rw-class">
                                     <div class="col-md-4">
-                                        <b>Next Date</b>
+                                        <b>Opponent Name</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $case->opponent_name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel mb25">
+                            <div class="panel-body">
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Court</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $case->court}}
+                                    </div>
+                                </div>
+
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Case Details</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $case->complainant_details }}
+                                    </div>
+                                </div>
+
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Comments</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $case->comments}}
+                                    </div>
+                                </div>
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Bench</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $caseEntries->bench}}
+                                    </div>
+                                </div>
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Next Date </b>
                                     </div>
                                     <div class="col-md-8">
                                         @if($caseEntries)
@@ -139,44 +192,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="panel mb25">
-                            <div class="panel-body">
-                                <div class="rw-class">
-                                    <div class="col-md-4">
-                                        <b>Opponent Name</b>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ $case->opponent_name }}
-                                    </div>
-                                </div>
-                                <div class="rw-class">
-                                    <div class="col-md-4">
-                                        <b>Complainant Details</b>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ $case->complainant_details }}
-                                    </div>
-                                </div>
-                                <div class="rw-class">
-                                    <div class="col-md-4">
-                                        <b>Date of filing</b>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ \Carbon\Carbon::parse($case->date_of_filing)->format('d-m-Y') }}
-                                    </div>
-                                </div>
-                                <div class="rw-class">
-                                    <div class="col-md-4">
-                                        <b>Comments</b>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ $case->comments}}
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -188,11 +204,12 @@
                         <h4 class="text-uppercase page-header">Case Entries</h4>
                     </div>
                     <div class="col-md-12">
+                        <?php if(count($caseEntries) == 0):?>
                         <a href="{{ url('admin/entries/create') }}/{{$case->id}}"
                            class="btn-primary btn btn-round btn-success" style="float: right; margin-bottom: 20px;"><i
-                                    class="fa fa-plus"></i> Create new entry</a>
+                                    class="fa fa-plus"></i>Create new entry</a>
+                        <?php endif; ?>
                         <table class="table table-bordered bordered table-striped table-condensed datatable">
-
                         </table>
                     </div>
                 </div>
@@ -267,8 +284,6 @@
         @push('jsfiles')
             <script type="text/javascript">
                 $(document).ready(function () {
-
-
                     oTable = $('.datatable').dataTable({
                         processing: true,
                         serverSide: true,
@@ -310,16 +325,22 @@
                                 "orderable": true
                             },
                             {
-                                title: 'Coram',
-                                data: 'coram',
-                                name: 'coram',
-                                width: "7%",
+                                title: 'Next Date',
+                                data: 'next_date',
+                                name: 'next_date',
+                                width: "10%",
                                 render: function (data, type, full, meta) {
-                                    if (full['coram'] == null) {
+                                    if (full['next_date'] == null) {
                                         return "N/A";
                                     }
                                     else {
-                                        return $.camelCase(full['coram']);
+                                        var diff = moment(full['next_date']).fromNow();
+                                        if (diff.indexOf('ago') != -1) {
+                                            var Cls = 'ago';
+                                        } else {
+                                            var Cls = 'after'
+                                        }
+                                        return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date " + Cls + " '> (" + diff + ")</span>";
                                     }
                                 },
                                 "searchable": false,
@@ -344,28 +365,6 @@
                                 "orderable": true
                             },
                             {
-                                title: 'Next Date',
-                                data: 'next_date',
-                                name: 'next_date',
-                                width: "10%",
-                                render: function (data, type, full, meta) {
-                                    if (full['next_date'] == null) {
-                                        return "N/A";
-                                    }
-                                    else {
-                                        var diff = moment(full['next_date']).fromNow();
-                                        if (diff.indexOf('ago') != -1) {
-                                            var Cls = 'ago';
-                                        } else {
-                                            var Cls = 'after'
-                                        }
-                                        return moment(full['next_date']).format('DD-MM-YYYY') + " <br><span class='next-date " + Cls + " '> (" + diff + ")</span>";
-                                    }
-                                },
-                                "searchable": false,
-                                "orderable": true
-                            },
-                            {
                                 title: 'Comments',
                                 data: 'comments',
                                 name: 'comments',
@@ -382,13 +381,35 @@
                                 "orderable": true
                             },
                             {
+                                title: 'Is Order',
+                                data: 'img',
+                                name: 'order',
+                                width: "7%",
+                                align: "center",
+                                render: function (url, type, full) {
+                                    if (full['attachment'] == null) {
+                                        return '<span class="margin10"><i class="icon-square-cross"></i></span>'
+                                    } else {
+                                        return '<a class="margin10" href="<?= url('attachment')?>/' + full['attachment'] + '" download>' +
+                                            '<i class="fa fa-cloud-download"></i></a>'
+                                            +'<img height="50" width="50" src="<?= url('attachment')?>/' + full['attachment'] + '"/>';
+
+                                    }
+                                },
+                                "searchable": false,
+                                "orderable": true
+                            },
+                            {
                                 title: 'Action',
                                 data: '',
                                 name: '',
                                 width: "7%",
                                 render: function (data, type, full, meta) {
+                                    var urlEdit = "{{url('admin/entries/update')}}/" + full['id'];
 
-                                    return ' <a href="javascript:;"><i class="fa fa-trash swal-warning-cancel" data-id="' + full['id'] + '" title="Delete attribute"></i></a>'
+                                    return '<a href="javascript:;"><i class="fa fa-trash swal-warning-cancel" data-id="' + full['id'] + '" title="Delete attribute"></i></a>' +
+                                        ' <a href="' + urlEdit + '"><i class="fa fa-pencil" title="Edit case"></i></a>';
+
 
                                 },
                                 "searchable": false,

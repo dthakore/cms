@@ -45,9 +45,14 @@
                                 @endif
                             </div>
 
+                            {{--<div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">--}}
+                                    {{--<label class="control-label" for="coram">Coram</label>--}}
+                                    {{--<input id="coram" type="text" class="form-control" name="coram" >--}}
+                            {{--</div>--}}
+
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                    <label class="control-label" for="coram">Coram</label>
-                                    <input id="coram" type="text" class="form-control" name="coram" >
+                                <label class="control-label" for="coram">Bench</label>
+                                <input id="bench" type="text" class="form-control" name="bench" >
                             </div>
                         </div>
 
@@ -66,7 +71,7 @@
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                    <label class="control-label" for="next_date">Next Date</label>
+                                    <label class="control-label" for="next_date">Next Date*</label>
                                     <input id="next_date" type="text" class="form-control" name="next_date" >
 
                             </div>
@@ -81,6 +86,12 @@
                         </div>
 
                         <div class="form-group row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                                <input name="is_order" id="is_order" type="checkbox" onchange="isOrder()"> Is An Order
+                            </div>
+                        </div>
+
+                        <div class="form-group row hide" id="attachment-div">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                                 <label class="control-label" for="attachment">Attachment</label>
                                 <input id="attachment" type="file" class="form-control" name="attachment" >
@@ -132,7 +143,13 @@
                         $('#cke_content').hide();
                     }
                 }
-
+                function isOrder(){
+                    if($('#is_order').is(':checked')){
+                        $('#attachment-div').removeClass('hide');
+                    } else {
+                        $('#attachment-div').addClass('hide');
+                    }
+                }
                 // var element = CKEDITOR.dom.element.createFromHtml( '<span>Dear Sir/Mam,</span>' );
                 // CKEDITOR.instances.content.insertElement( element );
 
@@ -141,11 +158,12 @@
                             date: {
                                 required: true,
                             },
-
                             stage: {
                                 required: true,
                             },
-
+                            next_date: {
+                                required: true
+                            }
                         },
                         highlight: function (element, errorClass) {
                             $(element).removeClass(errorClass);
@@ -160,10 +178,10 @@
                         }
                     });
 
-                console.log('test'+$("input[name=date]").val());
                 $("#date, #next_date").datepicker({
                     format:'yyyy-mm-dd',
                     startDate: new Date($("input[name=date]").val()),
+                    todayHighlight: true,
                 });
 
             </script>

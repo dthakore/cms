@@ -51,6 +51,7 @@ Route::group(['prefix' => '/admin', 'middleware' => ['role:admin|super_admin'],'
     Route::get('/entries/view/{entries}', 'EntriesController@view');
     Route::post('/entries/delete', 'EntriesController@delete');
     Route::get('/search/entry', 'EntriesController@searchEntry');
+    Route::post('/entries/add/itemnumber', 'EntriesController@updateItemNumber');
 
     Route::get('/attachments', 'AttachmentController@index');
     Route::get('/attachments/create/{case}', 'AttachmentController@create');
