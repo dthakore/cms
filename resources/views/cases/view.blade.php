@@ -153,7 +153,7 @@
                                         <b>Bench</b>
                                     </div>
                                     <div class="col-md-8">
-                                        {{ $caseEntries->bench}}
+                                        <?= isset($caseEntries->bench)? $caseEntries->bench:''; ?>
                                     </div>
                                 </div>
                                 <div class="rw-class">
