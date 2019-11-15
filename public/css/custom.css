@@ -93,7 +93,7 @@ select {
     /*border-bottom: 1px grey solid;*/
     background: #F0F0F0;
     font-weight: bolder;
-    font-size: 16px;
+    font-size: 12px;
 }
 .box-tab .nav-tabs li.active a, .box-tab .nav-tabs li.active a:hover {
     /*color: #616161;*/
@@ -138,4 +138,7 @@ table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:
 .cb-checkbox.checked .cb-inner {
     /* border-color: #0099cc; */
     background-color: unset;
+}
+.margin-bottom10{
+    margin-bottom: 50px !important;
 }
