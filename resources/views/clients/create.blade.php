@@ -6,13 +6,21 @@
     Create New Client
 @endsection
 @section('style')
-    <style type="text/css">
-        td > a {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 @endsection
+{{--@section('style')--}}
+    {{----}}
+    {{--<style type="text/css">--}}
+        {{--td > a {--}}
+            {{--margin-left: 10px;--}}
+            {{--margin-right: 10px;--}}
+        {{--}--}}
+        {{--.cb-checkbox.checked .cb-inner {--}}
+            {{--/* border-color: #0099cc; */--}}
+             {{--background-color: unset;--}}
+        {{--}--}}
+    {{--</style>--}}
+{{--@endsection--}}
 @section('content')
     <div class="main-content">
         <div class="panel">
@@ -86,20 +94,28 @@
 
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="whatsapp_enabled">Whatsapp Enabled</label>
-                                <input id="whatsapp_enabled" type="checkbox" class="form-control"
-                                       name="whatsapp_enabled">
+                                <label class="cb-checkbox cb-md checked">
+                                    <span class="cb-inner"><i>
+                                            <input type="checkbox" id="whatsapp_enabled" name="whatsapp_enabled"
+                                                   checked="" name="checked-checkbox-name"
+                                                   value="checked-checkbox-val"></i>
+                                    </span>Whatsapp Enabled
+                                </label>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="email_enabled">Email Enabled</label>
-                                <input id="email_enabled" type="checkbox" class="form-control" name="email_enabled">
-
+                                <label class="cb-checkbox cb-md checked">
+                                    <span class="cb-inner"><i>
+                                            <input type="checkbox" id="email_enabled" name="email_enabled"
+                                                   checked="" name="checked-checkbox-name"
+                                                   value="checked-checkbox-val"></i>
+                                    </span>Email Enabled
+                                </label>
                             </div>
 
                         </div>
 
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-sm-12">
-                            <button type="submit" class="btn btn-success btn-round text-center">Submit</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </div>
                 </form>

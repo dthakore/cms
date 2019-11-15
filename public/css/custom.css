@@ -40,17 +40,17 @@ td > a {
     position: absolute !important;
     float: none !important;
     top: -70px !important;
-    left: 70% !important;
+    right: 25px !important;
 }
 
-.buttons-csv {
-    background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
-    color: white !important;
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    border-radius: 30px !important;
-    border-color: #0099cc !important;
-}
+/*.buttons-csv {*/
+    /*background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;*/
+    /*color: white !important;*/
+    /*font-weight: 700 !important;*/
+    /*font-size: 14px !important;*/
+    /*border-radius: 30px !important;*/
+    /*border-color: #0099cc !important;*/
+/*}*/
 
 
 .right {
@@ -90,15 +90,19 @@ select {
     bottom: -1px;
     margin: 0 auto;
     padding: 0;
-    border-bottom: 1px grey solid;
+    /*border-bottom: 1px grey solid;*/
     background: #F0F0F0;
     font-weight: bolder;
     font-size: 16px;
 }
 .box-tab .nav-tabs li.active a, .box-tab .nav-tabs li.active a:hover {
-    color: #616161;
-    background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;
+    /*color: #616161;*/
+    /*background-image: -webkit-linear-gradient(top, #1f99cc 0%, #1f99cc 100%) !important;*/
+    /*color: white !important;*/
     color: white !important;
+    background-color: #4cc3d9 !important;
+    border-color: #4cc3d9 !important;
+    background-image: unset !important;
 }
 .btn-export{
     background-image: none !important;
@@ -108,4 +112,30 @@ select {
     border-radius: 0 !important;
     border-color: grey!important;
 }
+.btn-datatable{
+    color: white !important;
+    background-color: #4cc3d9 !important;
+    border-color: #4cc3d9 !important;
+    background-image: unset !important;
 
+}
+.datepicker table tr td.active.active, .datepicker table tr td.active:hover.active{
+ background-color: #4cc3d9 !important;
+}
+
+div.dt-button-collection {
+    width: 100px !important;
+}
+.buttons-html5{
+    border: none !important;
+}
+#clients,#cases{
+    margin-left: auto;
+}
+table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+    border-right: 1px #e4e4e4 solid !important;
+}
+.cb-checkbox.checked .cb-inner {
+    /* border-color: #0099cc; */
+    background-color: unset;
+}

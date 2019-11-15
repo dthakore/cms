@@ -6,7 +6,7 @@
     Attribute Manager
 @endsection
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 @endsection
 @section('content')
     <div class="main-content">
@@ -20,8 +20,10 @@
                 </ol>
             </div>
             <div class="panel-body">
-                <a href="{{ url('admin/cases/create') }}" class="btn-primary btn btn-round btn-success"
-                   style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
+                <div class="container-fluid">
+                    <a href="{{ url('admin/cases/create') }}" class="btn btn-info mb15 ml15"
+                       style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
+                </div>
                 <table class="table table-bordered bordered table-striped table-condensed datatable" id="cases">
                     <tfoot>
                     <tr>
@@ -185,8 +187,7 @@
                             $('#cases thead').append(r);
                             this.api().columns().every(function (i) {
                                 var column = this;
-                                if (i == 6)
-                                {
+                                if (i == 6) {
                                     var select = $('<select><option value="..."> Select All</option><option value="true">Accepted</option><option value="false">Rejected</option></select>')
                                         .appendTo($(column.footer()).empty())
                                         .on('change', function () {
@@ -208,16 +209,16 @@
                         oTable.dataTable().fnDraw();
                         e.preventDefault();
                     });
-                    $('.datatable tfoot th').each( function () {
+                    $('.datatable tfoot th').each(function () {
                         var title = $(this).text();
                         var input = document.createElement("input");
                         input.style.width = "100%";
                         $(this).html(input);
 
-                    } );
-                    $('.dataTable').on('click', 'tbody tr td:not(:last-child)', function() {
+                    });
+                    $('.dataTable').on('click', 'tbody tr td:not(:last-child)', function () {
                         console.log('API row values : ', table.row(this).data().id);
-                        var url = '<?php echo url('admin/cases/view').'/' ?>'+table.row(this).data().id;
+                        var url = '<?php echo url('admin/cases/view') . '/' ?>' + table.row(this).data().id;
                         window.open(url, '_blank');
                         // window.location.target = "http://google.com";
                     });
@@ -225,17 +226,17 @@
                     var table = $('.datatable').DataTable();
 
                     // Apply the search
-                    table.columns().every( function () {
+                    table.columns().every(function () {
                         var that = this;
 
-                        $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                            if ( that.search() !== this.value ) {
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
                                 that
-                                    .search( this.value )
+                                    .search(this.value)
                                     .draw();
                             }
-                        } );
-                    } );
+                        });
+                    });
                     $('.datatable').on('draw.dt', function () {
                         current_material_list = {};
                         var temp_ajax_src = oTable.fnGetData();
