@@ -6,12 +6,7 @@
     Clients Manager
 @endsection
 @section('style')
-    <style type="text/css">
-        td > a {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 @endsection
 @section('content')
     <div class="main-content">
@@ -25,10 +20,11 @@
                 </ol>
             </div>
             <div class="panel-body">
-
-                <a href="{{ url('admin/clients/create') }}" class="btn-primary btn btn-round btn-success"
-                   style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
-                <table class="table table-bordered bordered table-striped table-condensed datatable" id="clients">
+                <div class="container-fluid">
+                    <a href="{{ url('admin/clients/create') }}" class="btn btn-info mb15 ml15"
+                       style="float: right; margin-bottom: 20px;"><i class="fa fa-plus"></i> Create new</a>
+                </div>
+                <table class="table table-bordered bordered table-striped table-condensed datatable" id="clients" >
                     <tfoot>
                     <tr>
                         <th></th>
@@ -138,7 +134,7 @@
                                 title: 'Action',
                                 data: '',
                                 name: '',
-                                width: "7%",
+                                width: "10%",
                                 render: function (data, type, full, meta) {
 
                                     var url = "{{url('admin/clients/view')}}/" + full['id'];

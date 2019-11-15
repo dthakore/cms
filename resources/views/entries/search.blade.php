@@ -25,9 +25,9 @@
                     </li>
                 </ol>
 
-                <b class="breadcrumb mb0 no-padding right">
-                    Date : <?php echo date('d-m-Y'); ?>
-                </b>
+                <b class="breadcrumb mb0 right btn btn-sm btn-info">
+                    TODAY : <?php echo date('d-m-Y'); ?>
+                </b >
                 <br>
             </div>
             @if( Session::has("success") )
@@ -40,11 +40,12 @@
                 <div class="form-group row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                            <label class="control-label" for="date"><b>Enter date to get causelist</b></label>
-                            <input id="date" type="text" class="form-control" name="date">
+                            <label class="control-label" for="date"><h4>DATE TO GET CAUSELIST</h4></label>
+                            <input id="date" type="text" class="form-control" name="date" placeholder="Search for your date..">
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt30">
-                            <a href="javascript:void(0);" class="btn btn-primary btn-round"
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12 mt2">
+                            <br><br>
+                            <a href="javascript:void(0);" class="btn btn-info"
                                id="search_button">Search</a>
                         </div>
                     </div>
@@ -178,24 +179,24 @@
             buttons: [
                 {
                     extend: 'collection',
-                    text: 'Download',
-                    className: "buttons-csv",
+                    text: '<b>Download</b>',
+                    className: "btn-datatable",
                     buttons: [
                         {
                             extend: 'csv',
                             title: 'CauseList-' + next_date,
-                            className: 'btn-export'
+                            className: ''
                         },
                         {
                             extend: 'pdf',
                             title: 'CauseList [Date:-' + next_date+']',
-                            className: 'btn-export'
+                            className: ''
                         }
                     ],
                 },
                 {
                     text: '<i class="fa fa-edit"/><b> Item Number</b>',
-                    className: "buttons-csv",
+                    className: "btn-datatable",
                     action: function (e, dt, node, config) {
                         $.ajax({
                             "url": "{{ url('/api/get/cases')}}",

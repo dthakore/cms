@@ -7,7 +7,7 @@
 @endsection
 @section('style')
     <style type="text/css">
-        td > a{
+        td > a {
             margin-left: 10px;
             margin-right: 10px;
         }
@@ -27,13 +27,13 @@
             <div class="panel-body">
                 <form id="case_form" action="{{ url('admin/clients/save') }}/{{$user->id}}" method="post">
                     {{ csrf_field() }}
-                    <h3  class="page-header">Update Client</h3>
+                    <h3 class="page-header">Update Client</h3>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
 
                         <div class="form-group row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
                                 <label class="control-label" for="name">Name</label>
-                                <input id="name" value="{{ $user->name }}" type="text" class="form-control" name="name" >
+                                <input id="name" value="{{ $user->name }}" type="text" class="form-control" name="name">
 
                             </div>
 
@@ -43,11 +43,13 @@
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="email">Email</label>
-                                <input id="email" value="{{ $user->email }}" type="text" class="form-control" name="email" >
+                                <input id="email" value="{{ $user->email }}" type="text" class="form-control"
+                                       name="email">
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="name">Alternate Email</label>
-                                <input id="alternate_email" value="{{ $user->alternate_email }}" type="text" class="form-control" name="alternate_email" >
+                                <input id="alternate_email" value="{{ $user->alternate_email }}" type="text"
+                                       class="form-control" name="alternate_email">
 
                             </div>
 
@@ -56,12 +58,14 @@
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="contact_number">Contact Number</label>
-                                <input id="contact_number" value="{{ $user->contact_number }}"  type="text" class="form-control" name="contact_number" >
+                                <input id="contact_number" value="{{ $user->contact_number }}" type="text"
+                                       class="form-control" name="contact_number">
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                 <label class="control-label" for="contact_number">Company</label>
-                                <input id="company" value="{{ $user->company }}"  type="text" class="form-control" name="company" >
+                                <input id="company" value="{{ $user->company }}" type="text" class="form-control"
+                                       name="company">
                             </div>
 
 
@@ -69,26 +73,27 @@
 
                         <div class="form-group row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="email_enabled">Email Enabled</label>
-                                <input id="email_enabled" {{ ($user->email_enabled) ? 'checked' : '' }} type="checkbox" class="form-control" name="email_enabled" >
-
+                                <label class="cb-checkbox cb-md {{ ($user->email_enabled) ? 'checked' : '' }}">
+                                    <span class="cb-inner"><i>
+                                            <input type="checkbox" id="email_enabled" name="email_enabled"
+                                                   checked="" name="checked-checkbox-name"
+                                                   value="checked-checkbox-val"></i>
+                                    </span>Email Enabled
+                                </label>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
-                                <label class="control-label" for="whatsapp_enabled">Whatsapp Enabled</label>
-                                <input id="whatsapp_enabled" {{ ($user->whatsapp_enabled) ? 'checked' : '' }} type="checkbox" class="form-control" name="whatsapp_enabled" >
+                                <label class="cb-checkbox cb-md {{ ($user->whatsapp_enabled) ? 'checked' : '' }}">
+                                    <span class="cb-inner"><i>
+                                            <input type="checkbox" id="whatsapp_enabled" name="whatsapp_enabled"
+                                                   checked="" name="checked-checkbox-name"
+                                                   value="checked-checkbox-val"></i>
+                                    </span>Whatsapp Enabled
+                                </label>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-sm-12">
-                            <button type="submit" class="btn btn-success btn-round text-center">Submit</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -111,7 +116,7 @@
                                 type: "post",
                                 data:
                                     {
-                                        email: function(){
+                                        email: function () {
                                             return $('#case_form :input[name="email"]').val();
                                         },
                                         user: '{{$user->id}}'
@@ -119,7 +124,7 @@
                             }
                         },
                         contact_number: {
-                            number:true,
+                            number: true,
                         },
 
                     },
@@ -134,7 +139,7 @@
                         },
 
                         contact_number: {
-                            number:'Please enter only number',
+                            number: 'Please enter only number',
                         },
 
                     },
@@ -152,7 +157,7 @@
                 });
 
                 $("#date_of_filing, #next_date").datepicker({
-                    format:'dd-mm-yyyy'
+                    format: 'dd-mm-yyyy'
                 });
 
             </script>
