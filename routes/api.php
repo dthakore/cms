@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade as PDF;
+
+
 use Illuminate\Database\Eloquent\Collection;
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +47,36 @@ Route::get('/clients/serverside', [
         }
         $users = \App\User::whereIn('id', $user)->get();
         return \Yajra\DataTables\DataTables::of($users)->addIndexColumn()->make(true);
+    }
+]);
+Route::get('/export/cases', [
+    'as'   => 'serverSide',
+    'uses' => function (Request $request) {
+        $nextdate = \Carbon\Carbon::parse($request->input('next_date'))->format('Y-m-d');
+
+        if($request->input('totaldays') !=0){
+            $nextdates = next3days();
+            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->whereIn('next_date', $nextdates)->get();
+        } else {
+            $casesEntriesWithNextDate = App\CaseEntries::with(['cases','cases.client'])->where('date','=', $nextdate)->get();
+        }
+        $case=array();
+        foreach ($casesEntriesWithNextDate as $entry){
+
+            $case[] = array(
+                'case_number'=>$entry->cases->case_number,
+                'court'=>$entry->cases->court,
+                'bench'=>$entry->bench,
+                'client'=>$entry->cases->client->name,
+                'opponent_name'=>$entry->cases->opponent_name,
+                'opponent_advocate'=>$entry->cases->opponent_advocates,
+                'stage'=>$entry->stage,
+                'item_number'=>$entry->item_number
+                );
+        }
+        $data = ['title'=>'CAUSELIST OF '.date('d-m-Y',strtotime($nextdate)),'case_entries' => $case];
+        $pdf = PDF::loadview('casePDF', $data);
+        return $pdf->download('CAUSELIST-'.$nextdate.'.pdf');
     }
 ]);
 

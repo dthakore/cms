@@ -26,10 +26,11 @@
                     <h3 class="page-header">Create New Case</h3>
                     <div class="box-tab justified" id="rootwizard">
                         <ul class="nav nav-tabs margin-bottom10">
-                            <li id="tab1-li" class="active"><a href="#tab1" data-toggle="tab" aria-expanded="true">Forum details</a>
+                            <li id="tab1-li" class="active"><a href="#tab1" data-toggle="tab" aria-expanded="true">Forum
+                                    details</a>
                             </li>
-                            <li id="tab2-li" ><a href="#tab2" data-toggle="tab">Case Details</a></li>
-                            <li id="tab3-li" ><a href="#tab3" data-toggle="tab">Additional Information</a></li>
+                            <li id="tab2-li"><a href="#tab2" data-toggle="tab">Case Details</a></li>
+                            <li id="tab3-li"><a href="#tab3" data-toggle="tab">Additional Information</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab1">
@@ -206,14 +207,19 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 control-label" for="date_of_filing">Date of Filing</label>
                                     <div class="col-sm-4">
-                                        <input id="date_of_filing" type="text" class="form-control" name="date_of_filing">
+                                        <div class="input-prepend input-group "><span
+                                                    class="add-on input-group-addon"><i
+                                                        class="fa fa-calendar"></i></span>
+                                            <input id="date_of_filing" type="text" class="form-control drp"
+                                                   name="date_of_filing">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 control-label" for="stage">Stage</label>
                                     <div class="col-sm-4">
                                         <select id="stage" type="text" class="form-control" name="stage">
-                                            <option></option>
+                                            <option>Select stage</option>
                                             <option value="Filing VP">Filing VP</option>
                                             <option value="To file reply">To file reply</option>
                                             <option value="For rejoinder">For rejoinder</option>
@@ -224,7 +230,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-2 control-label" for="complainant_details">Complainant Details</label>
+                                    <label class="col-sm-2 control-label" for="complainant_details">Complainant
+                                        Details</label>
                                     <div class="col-sm-4">
                                         <textarea rows="10" id="complainant_details" type="text" class="form-control"
                                                   name="complainant_details"></textarea>
@@ -342,15 +349,15 @@
                             $("#applicant-no").addClass('hide');
                             $("#applicant-yes").empty();
                             $("#applicant-no").empty();
-                            $("#applicant-yes").append('<div class="form-group row"><label class="col-sm-2 control-label" for="client">Client</label><div class="col-sm-4"><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1">Client Role</label><div class="col-sm-4"><select id="client_role" type="text" class="form-control" name="client_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div></div>' +
-                                '<div class="form-group row"><label class="col-sm-2 control-label" for="stage">Opponent Name</label><div class="col-sm-4"><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="stage">Opponent Role</label><div class="col-sm-4"><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role2advocate">Opponent Advocate(s)</label><div class="col-sm-4"><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div></div>').find('#applicant-yes');
+                            $("#applicant-yes").append('<div class="form-group row"><label class="col-sm-2 control-label" for="client">Client</label><div class="col-sm-4"><select id="user_id" type="text" class="form-control" name="user_id"><option value="">Select client</option><?php foreach($users as $user): ?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1">Client Role</label><div class="col-sm-4"><select id="client_role" type="text" class="form-control" name="client_role"><option value="">Select role</option><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div></div>' +
+                                '<div class="form-group row"><label class="col-sm-2 control-label" for="stage">Opponent Name</label><div class="col-sm-4"><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="stage">Opponent Role</label><div class="col-sm-4"><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="">Select role</option><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role2advocate">Opponent Advocate(s)</label><div class="col-sm-4"><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div></div>').find('#applicant-yes');
                         }
                         if (this.value == 1) {
                             $("#applicant-no").removeClass('hide');
                             $("#applicant-yes").addClass('hide');
                             $("#applicant-yes").empty();
                             $("#applicant-no").empty();
-                            $("#applicant-no").append('<div class="form-group row"><label class="col-sm-2 control-label" for="stage">Applicant Name</label><div class="col-sm-4"><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="stage">Applicant Role</label><div class="col-sm-4"><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1advocate">Applicant Advocate(s)</label><div class="col-sm-4"><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="client">Client</label><div class="col-sm-6"><select id="user_id" type="text" class="form-control" name="user_id"><option></option><?php foreach($users as $user): ?><option value="<?php echo $user->id; ?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1">Client Role</label><div class="col-sm-6"><select id="client_role" type="text" class="form-control" name="client_role"><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div></div>').find('#applicant-no'); // append the select and find it
+                            $("#applicant-no").append('<div class="form-group row"><label class="col-sm-2 control-label" for="stage">Applicant Name</label><div class="col-sm-4"><input id="opponent_name" type="text" class="form-control" name="opponent_name"></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="stage">Applicant Role</label><div class="col-sm-4"><select id="opponent_role" type="text" class="form-control" name="opponent_role"><option value="">Select role</option><option value="Petitioner">Petitioner</option><option value="Appellant">Appellant</option><option value="Applicant">Applicant</option><option value="Complainant">Complainant</option></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1advocate">Applicant Advocate(s)</label><div class="col-sm-4"><input id="opponent_advocate" type="text" class="form-control" name="opponent_advocate"></input></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="client">Client</label><div class="col-sm-4"><select id="user_id" type="text" class="form-control" name="user_id"><option value="">Select client</option><?php foreach($users as $user): ?><option value="<?php echo $user->id; ?>"><?php echo $user->name;?></option><?php endforeach; ?></select></div></div><div class="form-group row"><label class="col-sm-2 control-label" for="role1">Client Role</label><div class="col-sm-4"><select id="client_role" type="text" class="form-control" name="client_role"><option value="">Select role</option><option value="Respondent">Respondent</option><option value="Opponent">Opponent</option><option value="Accused">Accused</option></select></div></div>').find('#applicant-no'); // append the select and find it
 
                         }
                     });
@@ -363,7 +370,7 @@
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     $(".nav li").removeClass("active");
                     var id = e.target.getAttribute('href');
-                    $(id+'-li').addClass('active');
+                    $(id + '-li').addClass('active');
                 })
 
             </script>
