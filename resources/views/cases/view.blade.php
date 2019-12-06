@@ -365,34 +365,25 @@
                                 "orderable": true
                             },
                             {
-                                title: 'Comments',
-                                data: 'comments',
-                                name: 'comments',
-                                width: "7%",
-                                render: function (data, type, full, meta) {
-                                    if (full['comments'] == null) {
-                                        return "N/A";
-                                    }
-                                    else {
-                                        return $.camelCase(full['comments']);
-                                    }
-                                },
-                                "searchable": false,
-                                "orderable": true
-                            },
-                            {
                                 title: 'Is Order',
                                 data: 'img',
                                 name: 'order',
                                 width: "7%",
                                 align: "center",
                                 render: function (url, type, full) {
+
                                     if (full['attachment'] == null) {
                                         return '<span class="margin10"><i class="icon-square-cross"></i></span>'
                                     } else {
+                                        var n = full['attachment'].includes("pdf");
+                                        if(n==1){
+                                            var thumb = "<?= url('images')?>/"+"pdf.jpg";
+                                        } else {
+                                            var thumb = "<?= url('attachment')?>/"+ full['attachment'];
+                                        }
                                         return '<a class="margin10" href="<?= url('attachment')?>/' + full['attachment'] + '" download>' +
                                             '<i class="fa fa-cloud-download"></i></a>'
-                                            +'<img height="50" width="50" src="<?= url('attachment')?>/' + full['attachment'] + '"/>';
+                                            +'<img height="35" width="35" src="'+thumb+'"/>';
 
                                     }
                                 },
@@ -406,9 +397,10 @@
                                 width: "7%",
                                 render: function (data, type, full, meta) {
                                     var urlEdit = "{{url('admin/entries/update')}}/" + full['id'];
+                                    var urlView = "{{url('admin/entries/view')}}/"+full['id'];
 
                                     return '<a href="javascript:;"><i class="fa fa-trash swal-warning-cancel" data-id="' + full['id'] + '" title="Delete attribute"></i></a>' +
-                                        ' <a href="' + urlEdit + '"><i class="fa fa-pencil" title="Edit case"></i></a>';
+                                        ' <a href="' + urlView + '"><i class="fa fa-eye" title="View case"></i></a>'+' <a href="' + urlEdit + '"><i class="fa fa-pencil" title="Edit case"></i></a>';
 
 
                                 },

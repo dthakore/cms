@@ -27,7 +27,7 @@
                         <a href="{{ url('/') }}">Home</a>
                     </li>
                     <li>
-                        <a href="{{ url('admin/cases/view/')}}/{{ $entries->id  }}">Case view</a>
+                        <a href="{{ url('admin/cases/view/')}}/{{ $entries->case_id  }}">Case view</a>
                     </li>
                     <li class="active">Entry View</li>
                 </ol>
@@ -50,22 +50,6 @@
                                 </div>
                                 <div class="rw-class">
                                     <div class="col-md-4">
-                                        <b>Coram</b>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ $entries->coram}}
-                                    </div>
-                                </div>
-                                <div class="rw-class">
-                                    <div class="col-md-4">
-                                        <b>Stage</b>
-                                    </div>
-                                    <div class="col-md-8 {{strtolower(str_replace(' ','_',$entries->stage))}}">
-                                        {{ $entries->stage}}
-                                    </div>
-                                </div>
-                                <div class="rw-class">
-                                    <div class="col-md-4">
                                         <b>Next Date</b>
                                     </div>
                                     <div class="col-md-8">
@@ -78,24 +62,30 @@
                                                     $class = 'after';
                                                 }
                                             @endphp
-                                            {{ \Carbon\Carbon::parse($entries->next_date)->format('d-m-Y') }} <br><span class='next-date {{$class}} '>({{ $diff }})</span>
+                                            {{ \Carbon\Carbon::parse($entries->next_date)->format('d-m-Y') }} <span class='next-date {{$class}} '>({{ $diff }})</span>
                                         @else
                                             N/A
                                         @endif
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="panel mb25">
-                            <div class="panel-body">
                                 <div class="rw-class">
                                     <div class="col-md-4">
-                                        <b>Comments</b>
+                                        <b>Stage</b>
+                                    </div>
+                                    <div class="col-md-8 {{strtolower(str_replace(' ','_',$entries->stage))}}">
+                                        {{ $entries->stage}}
+                                    </div>
+                                </div>
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Item Number</b>
                                     </div>
                                     <div class="col-md-8">
-                                        {{ $entries->comments}}
+                                        @if($entries->item_numner)
+                                            {{ $entries->item_numner }}
+                                        @else
+                                            N/A
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="rw-class">
@@ -111,10 +101,17 @@
 
                                     </div>
                                 </div>
+                                <div class="rw-class">
+                                    <div class="col-md-4">
+                                        <b>Comments</b>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ $entries->comments}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
 

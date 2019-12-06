@@ -81,7 +81,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
                                         <label class="control-label" for="email_enabled">Role</label>
                                         <select class="form-control" id="roles" name="role">
-                                            <option value=""></option>
+                                            <option value="">Select role</option>
                                             <option value="admin">Admin</option>
                                             <option value="user">User</option>
                                         </select>
